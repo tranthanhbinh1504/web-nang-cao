@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import * as yup from 'yup'
 import './index.css'
 
 
@@ -17,7 +17,7 @@ const theme = createTheme();
 
 let schema = yup.object().shape({
     user: yup.string().required("Your name is required"),
-     password:yup.string().required("Your password is required")     
+    password:yup.string().required("Your password is required")     
   })
 
 
@@ -29,6 +29,7 @@ export default function SignIn() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const onSubmit = (data: any) => console.log(data);
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -42,9 +43,9 @@ export default function SignIn() {
           }}
         >
             <Avatar
-                alt="TDT"
-                src="https://smarttrain.edu.vn/assets/uploads/2016/05/tdt-logo.jpg"
-                sx={{ width: 56, height: 56 }}
+              alt="TDT"
+              src="https://smarttrain.edu.vn/assets/uploads/2016/05/tdt-logo.jpg"
+              sx={{ width: 56, height: 56 }}
             />
 
           <Typography component="h1" variant="h5">
@@ -84,13 +85,6 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
       </Container>

@@ -1,6 +1,6 @@
 import './App.css';
 import Footer from './components/Footer/footer'
-import Header from './components/Header/header'
+import { Header } from './components/Header/header'
 
 import SignIn from './pages/login';
 
