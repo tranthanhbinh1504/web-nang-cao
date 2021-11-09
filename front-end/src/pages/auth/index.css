@@ -1,0 +1,20 @@
+.avatar-img {
+    box-shadow: 5px 10px 8px #888888;
+    margin-bottom: 20px;
+}
+.login-btn {
+    width: 250px !important;
+    display: flex !important;
+    justify-items: center;
+    margin: 0 auto !important;
+}
+
+.item-btn {
+    margin-top: 30px;
+}
+.Login-input p {
+    color: red !important;
+}
+.email-btn{
+    display: inline-flex;
+}

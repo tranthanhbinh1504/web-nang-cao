@@ -1,21 +1,23 @@
-import './App.css';
-import Footer from './components/Footer/footer'
-import { Header } from './components/Header/header'
+import React from 'react'
+import './App.css'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import DashBoard from './pages/InApp/Dashboard'
+import Login from './pages/auth'
 
-import SignIn from './pages/login';
-
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
-      <Header />
-      <SignIn />
-      
-      <div className="Footer">
-      <Footer />
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/login"/>
+          </Route>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/dashboard" component={DashBoard}/>
+        </Switch>
+      </Router>
     </div>
-    
-  );
+  )
 }
 
-export default App;
+export default App
