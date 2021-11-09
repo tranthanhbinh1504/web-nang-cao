@@ -8,10 +8,15 @@
   color: black !important;
 }
 
+.icon a{
+  color: #000 !important;
+}
+
 .copyright {
   color: #000;
 }
 .copyright a {
   padding-left: 5px;
+  color: blue !important;
 }
 
