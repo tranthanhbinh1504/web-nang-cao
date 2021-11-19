@@ -10,9 +10,9 @@
     font-size: 18px;
 }
 .sidebarlink:hover {
-    background: #1876f2;
+    background: #9CCAD9;
     color: white;
-    border-left: 4px solid #1876f2;
+    border-left: 4px solid #9CCAD9;
     cursor: pointer;
 }
 .sidebarLabel {
@@ -31,6 +31,6 @@
 
 }
 .dropdownlink:hover {
-    background: #1876f2;
+    background: #9CCAD9;
     cursor: pointer;
 }

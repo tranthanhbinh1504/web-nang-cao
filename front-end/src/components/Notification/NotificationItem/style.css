@@ -1,0 +1,22 @@
+.notification-item .subTitle {
+    font-size: 12px;
+    font-style: italic;
+    padding-left: 5px;
+}
+.notification-item .detail-noti {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.notification-item .title {
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.notification-item .box-noti:hover {
+    background-color:  #9CCAD9;
+}
