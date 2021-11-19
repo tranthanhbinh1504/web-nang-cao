@@ -1,0 +1,135 @@
+.post-container {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 6px;
+    padding:20px;
+    color: #626262;
+}
+.user-profile{
+    display: flex;
+    align-items: center;
+}
+.socail-post-row a{
+    text-decoration: none;
+    color: #626262 !important;
+}
+.user-profile p,small{
+   margin-bottom: -5px;
+    padding-left: 5px;
+    color: #626262;
+}
+.user-profile small{
+   font-size: 12px;
+ }
+ .input-container {
+     padding-left: 70px;
+     padding-top: 10px;
+ }
+ .user-profile textarea{
+    width: 80%;
+    border-radius: 10px;
+    border: 0.5px solid #aaaaaa;
+    outline: 0;
+    background: transparent;
+    resize: none;
+    margin-left: 20px;
+ }
+ .add-post-links {
+     display: flex;
+     margin-top: 10px;
+ }
+ .add-post-links a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #626262;
+    margin-right:50px;
+    font-size: 13px;
+}
+.add-post-links .post-links-icon{
+   width: 20px;
+   font-size: 20px;
+   margin-right: 10px;
+}
+.socail-post-container {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 6px;
+    padding:20px;
+    color: #626262;
+    margin: 20px 0;
+}
+.user-profile span {
+    font-size: 12px;
+    padding-left: 5px;
+    color: #9a9a9a;
+    font-style: italic;
+}
+.socail-post-text {
+    color: #9a9a9a;
+    margin: 15px 0;
+    font-size: 15px;
+}
+.socail-post-text span {
+    color: #626262 !important;
+    font-weight: 600;
+}
+.socail-post-text a {
+    color: #1876f2 !important;
+    text-decoration: none;
+}
+.socail-post-text img {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    margin-top: 7px;
+}
+.socail-post-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.activity-icon .socail-icon{
+    width: 18px;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.activity-icon div {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 100px;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+.socail-post-container hr {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.cus-border {
+    border: 0.5px solid #d8d5d5;
+}
+
+@media only screen and (max-width: 1675px){
+
+    .main-box-dashboard {
+        width: 700px !important;
+    }
+
+}
+@media only screen and (max-width: 1375px){
+
+    .main-box-dashboard {
+        width: 700px !important;
+        margin-right: 50px !important;
+    }
+
+}
+@media only screen and (max-width: 1000px){
+
+    .main-box-dashboard {
+        width: 700px !important;
+        margin-right: 10px !important;
+    }
+
+}

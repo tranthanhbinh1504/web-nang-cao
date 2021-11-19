@@ -10,3 +10,8 @@
     font-size: 15px;
     margin-left: 5px;
 }
+@media only  screen and (max-width: 1375px) {
+    .notification {
+        display: none;
+    }
+}
