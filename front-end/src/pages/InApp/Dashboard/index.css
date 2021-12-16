@@ -21,18 +21,20 @@
 .user-profile small{
    font-size: 12px;
  }
- .input-container {
+.input-container {
      padding-left: 70px;
      padding-top: 10px;
  }
- .user-profile textarea{
-    width: 80%;
-    border-radius: 10px;
-    border: 0.5px solid #aaaaaa;
+.user-profile textarea{
+    width: 100%;
+    border-radius: 15px;
+    border: none;
     outline: 0;
     background: transparent;
     resize: none;
     margin-left: 20px;
+    background-color: #e0dfdf;
+    height: 40px;
  }
  .add-post-links {
      display: flex;
@@ -102,12 +104,22 @@
     padding-left: 10px;
 }
 .socail-post-container hr {
-    width: 80%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
 .cus-border {
     border: 0.5px solid #d8d5d5;
+}
+.comment .parentcomment {
+    padding: 15px;
+    align-items: center;
+}
+.comment .parentcomment p{
+    margin: 10px;
+    padding: 15px;
+    background-color:#d6d6d6 ;
+    border-radius: 20px;
 }
 
 @media only screen and (max-width: 1675px){

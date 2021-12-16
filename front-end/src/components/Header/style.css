@@ -1,11 +1,14 @@
 .header {
     width: 100%;
 }
+.btn-profile {
+    text-decoration: none !important;
+    color: black;
+}
 nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #1876f2;
 }
 .logo  {
     width: 30px;
@@ -49,6 +52,7 @@ nav {
     top: 0;
     right: 0;
 }
+
 @media only screen and (max-width: 700px) {
     .nav-left p {
         display: none;

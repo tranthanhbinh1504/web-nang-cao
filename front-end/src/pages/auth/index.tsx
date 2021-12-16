@@ -18,6 +18,7 @@ import Footer from '../../components/Footer'
 import './index.css'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
+import { deepOrange, deepPurple } from '@mui/material/colors'
 
 
 const schema = yup.object().shape({
@@ -137,29 +138,29 @@ export default function SignIn() {
             </Box>
           </Box>
 
-          <Grid
+          <Box
             sx={{
-              my: 8,
-              mx: 4,
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            <Grid item xs={12} sm={6}>
+            <a href="/">
+              <Button
+                className="login-btn"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                <Avatar
+                  alt="Google-image"
+                  sx={{ width: 35, height: 35,bgcolor:deepOrange[500] }}
+                >G</Avatar>
+                Login with google gmail
+              </Button>
 
-              <Avatar
-                alt="TDT"
-                src="https://smarttrain.edu.vn/assets/uploads/2016/05/tdt-logo.jpg"
-                sx={{ width: 30, height: 30 }}
-                className='avatar-img'
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <a href="/" className='email-btn'>
-                <p>Login with student email</p>
-              </a>
-            </Grid>
-          </Grid>
+            </a>
+          </Box>
         </Grid>
       </Grid>
       <Footer />
