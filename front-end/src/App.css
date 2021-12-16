@@ -1,4 +1,8 @@
 .App {
-    background-color: #efefef;
+    background-color: #FFF;
+    min-height: 1000px;
+    height: auto;
+}
+@media only screen and (max-width: 600px){
 
 }

@@ -14,9 +14,25 @@ export const  SidebarData = [
 
   },
   {
+    title: 'Notification',
+    path: '/notification',
+    icon:<RiIcons.RiHome2Fill/>,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+  },
+  {
+    title: 'User',
+    path: '/listuser',
+    icon:<RiIcons.RiHome2Fill/>,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+  },
+  {
 
     title: 'Report',
-    path: 'dashboard/reports',
+    path: 'dashboard/report',
     icon:<RiIcons.RiHome2Fill/>,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,

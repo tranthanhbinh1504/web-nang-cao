@@ -35,7 +35,7 @@ function Header() {
         </div>
         <div className="nav-right">
           <IconButton className="online" onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar src="https://xaydunghoanghung.com/wp-content/uploads/2020/11/JaZBMzV14fzRI4vBWG8jymplSUGSGgimkqtJakOV.jpeg"></Avatar>
+            <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
           </IconButton>
 
           <Menu
@@ -73,16 +73,9 @@ function Header() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <MenuItem>
-              {/* <Link to="/about">About</Link> */}
-              <Avatar /> Profile
+              <Avatar /><a href="/profile" className='btn-profile'>Profile</a>
             </MenuItem>
             <Divider />
-            <MenuItem>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-                  Settings
-            </MenuItem>
             <MenuItem onClick={logOut}>
               <ListItemIcon>
                 <Logout fontSize="small" />
@@ -95,5 +88,4 @@ function Header() {
     </div>
   )
 }
-
 export default Header
