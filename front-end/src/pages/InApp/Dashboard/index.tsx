@@ -8,7 +8,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommentIcon from '@mui/icons-material/Comment'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import './index.css'
+import './style.scss'
 
 export default function DashBoard() {
 
