@@ -1,0 +1,37 @@
+.form {
+  &_header {
+    padding-top: 10px;
+    text-align: center;
+  }
+  &_field {
+    padding: 10px 0;
+  }
+  &_btn {
+    display: flex;
+    justify-content: center;
+  }
+  &_btnAction {
+    margin: 15px;
+  }
+}
+
+.useradmin {
+  width: 100%;
+  height: auto;
+}
+.useradmin .btn-edit-delete {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.useradmin .user-table {
+  min-height: 500px;
+}
+@media only screen and (max-width: 600px){
+  .box-UserAdmin {
+    margin-left: 0 !important;
+  }
+}
+
+.header {
+  padding-top: 20px;
+}
