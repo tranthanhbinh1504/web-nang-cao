@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import Footer from '../../components/Footer'
-import './index.css'
+import './style.scss'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { deepOrange, deepPurple } from '@mui/material/colors'
@@ -48,24 +48,10 @@ export default function SignIn() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '90vh' }}>
+    <div>
+      <div className='login-page'>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://media-exp1.licdn.com/dms/image/C561BAQEXozIk9eT0-Q/company-background_10000/0/1621321144655?e=2159024400&v=beta&t=Iohif0y0ZrWODJH1Jzbh-5z28FpyHXb1funeo5nY-hM)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12}>
           <Box
             sx={{
               my: 8,
@@ -137,8 +123,7 @@ export default function SignIn() {
               </Grid>
             </Box>
           </Box>
-
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -160,10 +145,9 @@ export default function SignIn() {
               </Button>
 
             </a>
-          </Box>
+          </Box> */}
         </Grid>
-      </Grid>
-      <Footer />
-    </ThemeProvider>
+      </div>
+    </div>
   )
 }

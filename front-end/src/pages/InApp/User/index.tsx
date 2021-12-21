@@ -25,7 +25,7 @@ interface AddUserModal {
 enum ModalAction {
   ADD = 'ADD',
   EDIT = 'EDIT',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
 }
 
 const schema = yup.object({
@@ -203,7 +203,6 @@ export default function UserAdmin() {
               </Button>
             </div>
           </>
-
         }
       </Modal.Body>
     )
@@ -226,7 +225,6 @@ export default function UserAdmin() {
               <th>STT</th>
               <th>Họ và tên</th>
               <th>Email</th>
-              <th>Khoa</th>
               <th>Thao tác</th>
             </tr>
           </thead>
@@ -237,7 +235,6 @@ export default function UserAdmin() {
                   <td>{index+1}</td>
                   <td><a href="#">{user.fullname}</a></td>
                   <td>{user.email}</td>
-                  <td>{user.department}</td>
                   <td>
                     <button
                       className="btn btn-sm btn-outline-primary btn-edit-delete"
@@ -255,7 +252,6 @@ export default function UserAdmin() {
             })}
           </tbody>
         </table>
-        <p>Tổng số người dùng: <strong className="text-danger">{Userdata.length}</strong></p>
       </div>
       <Modal
         show={modal}
