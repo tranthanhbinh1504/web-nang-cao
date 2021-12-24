@@ -91,6 +91,11 @@ export default function UserAdmin() {
   const openModal = (action: string, data?: any) => {
     setModal(true)
     setAction(action)
+    if (action === ModalAction.ADD) {
+      setValue('fullname', '')
+      setValue('email', '')
+      setValue('department', '')
+    }
     if (data) {
       setValue('fullname', data.fullname)
       setValue('email', data.email)
@@ -100,10 +105,6 @@ export default function UserAdmin() {
 
   const closeModal = () => {
     setModal(false)
-    setAction('')
-    setValue('fullname', '')
-    setValue('email', '')
-    setValue('department', '')
   }
 
 
