@@ -27,18 +27,13 @@ const uploadpicture = (
   </Stack>
 )
 const profile = (
-  <Container component="main" maxWidth="xs">
+  <Container component="main" sx={{display:'flex'}}>
+    {uploadpicture}
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
       }}
     >
-      <Typography component="h1" variant="h5">
-        Profile
-      </Typography>
-      {uploadpicture}
       <Box component="form" noValidate sx={{ mt: 1 }}>
         <TextField
           margin="normal"
@@ -72,7 +67,33 @@ const profile = (
         />
         <Button
           type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Update
+        </Button>
+        <TextField
+          margin="normal"
+          required
           fullWidth
+          id="password"
+          label="Password"
+          name="password"
+          autoComplete="password"
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="confirmpassword"
+          label="Confirm password"
+          type="confirmpassword"
+          id="confirmpassword"
+          autoComplete="confirmpassword"
+        />
+        <Button
+          type="submit"
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
@@ -87,11 +108,11 @@ const profile = (
 const Profile = () => {
   return (
     <div>
-      <Box sx={{ display: 'flex' }}>
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` },marginLeft:`${drawerWidth}px`}}
-        >
+      <Typography component="h1" variant="h5">
+            Profile
+      </Typography>
+      <Box sx={{ display: 'flex',justifyContent:'center'}}>
+        <Box>
           {profile}
         </Box>
       </Box>

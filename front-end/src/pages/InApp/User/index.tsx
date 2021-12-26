@@ -12,7 +12,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-
+import Pagination from '@mui/material/Pagination'
 const drawerWidth = 240
 
 //schema validate of Add User Modal
@@ -36,13 +36,8 @@ const schema = yup.object({
 
 const Userdata = [
   {
-    fullname: 'Nguyễn Tấn Tài',
-    email: 'tantai9991@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn Khải',
-    email: 'tantai9991@gmail.com',
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
     department: 'CNTT,KTPM',
   },
   {
@@ -51,8 +46,18 @@ const Userdata = [
     department: 'CNTT,KTPM',
   },
   {
-    fullname: 'Nguyễn xst',
-    email: 'tantai9991@gmail.com',
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
+    department: 'CNTT,KTPM',
+  },
+  {
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
+    department: 'CNTT,KTPM',
+  },
+  {
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
     department: 'CNTT,KTPM',
   },
 ]
@@ -73,19 +78,28 @@ const MenuProps = {
 const UserAdmin = () => {
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-  const [age, setAge] = React.useState('')
+  const [department, setDepartment] = React.useState('')
 
   const { register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>({
     resolver: yupResolver(schema)
   })
 
+  //panigation
+  const itemsPerPage = 6
+  const [page, setPage] = React.useState(1)
+  const [noOfPages] = React.useState(
+    Math.ceil(Userdata.length / itemsPerPage)
+  )
+  const handleChangePage = (event:any, value:any) => {
+    setPage(value)
+  }
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
     Userdata.push(data)
   }
 
   const handleChange = (event:any) => {
-    setAge(event.target.value)
+    setDepartment(event.target.value)
   }
 
   const openModal = (action: string, data?: any) => {
@@ -157,9 +171,9 @@ const UserAdmin = () => {
                   {...register('department')}
                   onChange={handleChange}
                 >
-                  <MenuItem value={'CNTT'}>a</MenuItem>
-                  <MenuItem value={'CNTT1'}>b</MenuItem>
-                  <MenuItem value={'CNTT2'}>c</MenuItem>
+                  <MenuItem value={'1'}>a</MenuItem>
+                  <MenuItem value={'2'}>b</MenuItem>
+                  <MenuItem value={'3'}>c</MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -230,29 +244,38 @@ const UserAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {Userdata.map((user,index) => {
-              return(
-                <tr key={index+1}>
-                  <td>{index+1}</td>
-                  <td><a href="#">{user.fullname}</a></td>
-                  <td>{user.email}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-outline-primary btn-edit-delete"
-                      onClick={() => openModal(ModalAction.EDIT, user)}>
-                        Chỉnh sửa
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger btn-edit-delete"
-                      onClick={() => openModal(ModalAction.DELETE)}>
-                        Xóa
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
+            {Userdata
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((user,index) => {
+                return(
+                  <tr key={index+1}>
+                    <td>{itemsPerPage*(page-1)+index+1}</td>
+                    <td>{user.fullname}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-outline-primary btn-edit-delete"
+                        onClick={() => openModal(ModalAction.EDIT, user)}>
+                          Chỉnh sửa
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-danger btn-edit-delete"
+                        onClick={() => openModal(ModalAction.DELETE)}>
+                          Xóa
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
           </tbody>
         </table>
+        <Pagination
+          defaultPage={6}
+          count={noOfPages}
+          page={page}
+          onChange={handleChangePage}
+          sx={{justifyContent:'right'}}
+        />
       </div>
       <Modal
         show={modal}
