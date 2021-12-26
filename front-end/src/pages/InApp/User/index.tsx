@@ -70,7 +70,7 @@ const MenuProps = {
   },
 }
 
-export default function UserAdmin() {
+const UserAdmin = () => {
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
   const [age, setAge] = React.useState('')
@@ -267,3 +267,5 @@ export default function UserAdmin() {
     </div>
   )
 }
+
+export default UserAdmin

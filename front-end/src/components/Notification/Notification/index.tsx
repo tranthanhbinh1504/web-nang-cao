@@ -4,9 +4,9 @@ import Box from '@mui/material/Box'
 import NotiItem from '../NotificationItem/index'
 import {NotifiData} from '../NotifiData'
 
-
 const HighofNOtiTitle = 10
-function Notification() {
+
+const Notification: React.FC = () => {
   return (
     <div className='notification'>
       <Box
