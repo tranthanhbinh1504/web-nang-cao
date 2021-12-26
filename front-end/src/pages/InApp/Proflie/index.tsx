@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import Sidebar from '../../../components/Sidebar/sidebar/index'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 
@@ -13,7 +12,7 @@ const drawerWidth = 240
 const Input = styled('input')({
   display: 'none',
 })
-const uploadpicture =(
+const uploadpicture = (
   <Stack direction="row" alignItems="center" spacing={2}>
     <label htmlFor="contained-button-file">
       <Input accept="image/*" id="contained-button-file" multiple type="file" />
@@ -85,10 +84,9 @@ const profile = (
 )
 
 
-export default function Profile() {
+const Profile = () => {
   return (
     <div>
-      <Sidebar />
       <Box sx={{ display: 'flex' }}>
         <Box
           component="main"
@@ -100,3 +98,5 @@ export default function Profile() {
     </div>
   )
 }
+
+export default Profile

@@ -2,8 +2,13 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import './style.css'
 
+type Props = {
+  item: any
+}
 
-function NotiItem({item}:any) {
+const NotiItem: React.FC<Props> = ({
+  item
+}) => {
   return (
     <div className='notification-item'>
 

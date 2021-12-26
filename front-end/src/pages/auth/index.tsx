@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 
 const theme = createTheme()
 
-export default function SignIn() {
+const SignIn = () => {
   const history = useHistory()
   const {
     register,
@@ -123,31 +123,10 @@ export default function SignIn() {
               </Grid>
             </Box>
           </Box>
-          {/* <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <a href="/">
-              <Button
-                className="login-btn"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                <Avatar
-                  alt="Google-image"
-                  sx={{ width: 35, height: 35,bgcolor:deepOrange[500] }}
-                >G</Avatar>
-                Login with google gmail
-              </Button>
-
-            </a>
-          </Box> */}
         </Grid>
       </div>
     </div>
   )
 }
+
+export default SignIn
