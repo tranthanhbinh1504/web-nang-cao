@@ -25,7 +25,7 @@ function Header() {
     history.push('/')
   }
   return (
-    <div className='header'>
+    <div className='header-component'>
       <nav>
         <div className="nav-left">
           <a href="/">
@@ -76,7 +76,7 @@ function Header() {
               <Avatar /><a href="/profile" className='btn-profile'>Profile</a>
             </MenuItem>
             <Divider />
-            <MenuItem onClick={logOut}>
+            <MenuItem onClick={logOut} className='btn-logout'>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

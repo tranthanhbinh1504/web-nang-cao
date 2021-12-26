@@ -206,14 +206,14 @@ const SideBar: React.FC<Props> = ({
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        {/* Phan de Router*/}
+        {/* Phan de item sidebar*/}
         {SidebarData.map((item, index) => {
           return <SubMenu item={item} key={index} />
         })}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {/* Phan de dashboard */}
+        {/* Phan de components con */}
         {childComponent}
       </Main>
     </Box>

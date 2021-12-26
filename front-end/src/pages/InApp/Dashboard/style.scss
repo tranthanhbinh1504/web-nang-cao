@@ -25,16 +25,19 @@
      padding-left: 70px;
      padding-top: 10px;
  }
-.user-profile textarea{
+ .user-profile .postmodal {
     width: 100%;
     border-radius: 15px;
-    border: none;
-    outline: 0;
-    background: transparent;
-    resize: none;
     margin-left: 20px;
     background-color: #e0dfdf;
     height: 40px;
+ }
+ .user-profile .postmodal:hover {
+    background-color: #c2c2c2;
+ }
+ .user-profile .postmodal p{
+    padding-top: 8px;
+    padding-bottom: 5px;
  }
  .add-post-links {
      display: flex;
@@ -68,7 +71,7 @@
     font-style: italic;
 }
 .socail-post-text {
-    color: #9a9a9a;
+    color: black;
     margin: 15px 0;
     font-size: 15px;
 }
@@ -91,28 +94,43 @@
     align-items: center;
     justify-content: space-between;
 }
-.activity-icon .socail-icon{
+.socail-post-row .activity-icon {
+    width: 80%;
+
+}
+.socail-post-row .activity-icon div{
+    width: 40%;
+    height: auto;
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.socail-post-row .activity-icon div:hover{
+    background-color: #ececec;
+}
+.socail-post-row .activity-icon .socail-icon{
     width: 18px;
     font-size: 20px;
     margin-right: 10px;
 }
-.activity-icon div {
-    display: inline-flex;
+.comment {
+    display: flex;
     align-items: center;
-    margin-right: 100px;
+}
+.loadmorecomment {
     margin-top: 10px;
-    padding-left: 10px;
+    cursor: pointer;
 }
 .socail-post-container hr {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 .cus-border {
     border: 0.5px solid #d8d5d5;
 }
 .comment .parentcomment {
-    padding: 15px;
     align-items: center;
 }
 .comment .parentcomment p{
@@ -121,7 +139,36 @@
     background-color:#d6d6d6 ;
     border-radius: 20px;
 }
-
+.postpopup .postpopup-item{
+    padding: 15px;
+}
+.postpopup .postpopup-item span{
+    background-color: #FFF;
+    cursor: pointer;
+}
+.postcomment {
+    margin-top: 5px;
+}
+.postcomment textarea{
+    margin-left: 10px;
+    outline: 0;
+    border: 0;
+    background-color:#d6d6d6;
+    padding: 10px;
+    padding-top:5px;
+    border-radius: 14px;
+    resize: none;
+    width: 100%;
+}
+.textarea-post {
+    resize: none;
+    border: 0;
+    width: 100%;
+    outline: 0;
+}
+.like-btn{
+    color: #1876f2;
+}
 @media only screen and (max-width: 1675px){
 
     .main-box-dashboard {
@@ -131,17 +178,7 @@
 }
 @media only screen and (max-width: 1375px){
 
-    .main-box-dashboard {
-        width: 700px !important;
-        margin-right: 50px !important;
-    }
-
 }
 @media only screen and (max-width: 1000px){
-
-    .main-box-dashboard {
-        width: 700px !important;
-        margin-right: 10px !important;
-    }
 
 }
