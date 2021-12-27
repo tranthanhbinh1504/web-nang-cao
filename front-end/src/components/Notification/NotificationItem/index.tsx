@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import './style.css'
+import './style.scss'
 
 type Props = {
   item: any

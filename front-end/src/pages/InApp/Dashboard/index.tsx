@@ -10,7 +10,7 @@ import ColorizeOutlinedIcon from '@mui/icons-material/ColorizeOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import './style.scss'
-import SideBar from 'src/components/Sidebar/sidebar'
+import SideBar from 'src/components/Sidebar/Sidebar2'
 import { useForm } from 'react-hook-form'
 import {Button, Popover, TextareaAutosize } from '@mui/material'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
@@ -250,7 +250,6 @@ const DashBoard = () => {
                 sx= {{
                   width:'100%',
                   height:'auto',
-                  mt:10
                 }}
               >
                 <div className="post-container cus-border">

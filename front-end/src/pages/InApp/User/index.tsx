@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
-const drawerWidth = 240
+import Sidebar from 'src/components/Sidebar/Sidebar2'
 
 //schema validate of Add User Modal
 interface AddUserModal {
@@ -61,19 +61,6 @@ const Userdata = [
     department: 'CNTT,KTPM',
   },
 ]
-
-const ITEM_HEIGHT = 48
-
-const ITEM_PADDING_TOP = 8
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-}
 
 const UserAdmin = () => {
   const [modal, setModal] = useState(false)
@@ -224,70 +211,72 @@ const UserAdmin = () => {
   }
 
   return (
-    <div className="user-admin">
-      <div className="container useradmin">
-        <h4 className="header text-primary text-center text-uppercase">Danh sách người dùng</h4>
-        <button
-          className="btn btn-success btn-sm my-4"
-          onClick={() => openModal(ModalAction.ADD)}
+    <Sidebar childComponent={
+      <div className="user-admin">
+        <div className="container useradmin">
+          <h4 className="header text-primary text-center text-uppercase">Danh sách người dùng</h4>
+          <button
+            className="btn btn-success btn-sm my-4"
+            onClick={() => openModal(ModalAction.ADD)}
+          >
+            Thêm người dùng
+          </button>
+          <p>Chọn một người dùng để xem chi tiết</p>
+          <table className="table table-striped border user-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Họ và tên</th>
+                <th>Email</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Userdata
+                .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                .map((user,index) => {
+                  return(
+                    <tr key={index+1}>
+                      <td>{itemsPerPage*(page-1)+index+1}</td>
+                      <td>{user.fullname}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-primary btn-edit-delete"
+                          onClick={() => openModal(ModalAction.EDIT, user)}>
+                            Chỉnh sửa
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger btn-edit-delete"
+                          onClick={() => openModal(ModalAction.DELETE)}>
+                            Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+            </tbody>
+          </table>
+          <Pagination
+            defaultPage={6}
+            count={noOfPages}
+            page={page}
+            onChange={handleChangePage}
+            sx={{justifyContent:'right'}}
+          />
+        </div>
+        <Modal
+          show={modal}
+          onHide={closeModal}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
         >
-          Thêm người dùng
-        </button>
-        <p>Chọn một người dùng để xem chi tiết</p>
-        <table className="table table-striped border user-table">
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Họ và tên</th>
-              <th>Email</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Userdata
-              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-              .map((user,index) => {
-                return(
-                  <tr key={index+1}>
-                    <td>{itemsPerPage*(page-1)+index+1}</td>
-                    <td>{user.fullname}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-outline-primary btn-edit-delete"
-                        onClick={() => openModal(ModalAction.EDIT, user)}>
-                          Chỉnh sửa
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger btn-edit-delete"
-                        onClick={() => openModal(ModalAction.DELETE)}>
-                          Xóa
-                      </button>
-                    </td>
-                  </tr>
-                )
-              })}
-          </tbody>
-        </table>
-        <Pagination
-          defaultPage={6}
-          count={noOfPages}
-          page={page}
-          onChange={handleChangePage}
-          sx={{justifyContent:'right'}}
-        />
+          { modalHeader() }
+          { modalBody() }
+        </Modal>
       </div>
-      <Modal
-        show={modal}
-        onHide={closeModal}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        { modalHeader() }
-        { modalBody() }
-      </Modal>
-    </div>
+    }/>
   )
 }
 
