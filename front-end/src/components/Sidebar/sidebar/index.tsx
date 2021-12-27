@@ -1,143 +1,127 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
+import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
 import CssBaseline from '@mui/material/CssBaseline'
-import MuiAppBar from '@mui/material/AppBar'
+import Divider from '@mui/material/Divider'
+import Drawer from '@mui/material/Drawer'
+import IconButton from '@mui/material/IconButton'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import MailIcon from '@mui/icons-material/Mail'
+import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { styled, useTheme } from '@mui/material/styles'
-import Divider from '@mui/material/Divider'
+import Avatar from '@mui/material/Avatar'
 import SubMenu from '../submenu'
 import { SidebarData } from '../sidebarData'
-import Header from '../../Header/index'
-import Avatar from '@mui/material/Avatar'
-
-
+import Header from '../../Header'
+import './style.scss'
 const drawerWidth = 330
-
-interface StyledCustom {
-  open?: boolean
-}
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}))
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<StyledCustom>(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-)
-
-const AppBar = styled(MuiAppBar, {shouldForwardProp: (prop) => prop !== 'open'})<StyledCustom>
-(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}))
-
 type Props = {
-  childComponent? : any
+    childComponent? : any
 }
+const ResponsiveDrawer: React.FC<Props> = ({childComponent},props) =>{
+  // eslint-disable-next-line react/prop-types
+  const { window } = props
+  const [mobileOpen, setMobileOpen] = React.useState(false)
 
-const SideBar: React.FC<Props> = ({
-  childComponent}) => {
-  const theme = useTheme()
-  const [open, setOpen] = React.useState(true)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
   }
 
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
+  const drawer = (
+    <div>
+      <Toolbar />
+      <Divider />
+      <div className='profile_sidebar'>
+        <IconButton className="online" size="small" sx={{ ml: 2 }}>
+          <Avatar
+            src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
+            sx={{width: 50, height: 50}}
+          ></Avatar>
+        </IconButton>
+        <div className="titlename_sidebar">
+          <span>Tấn Tài</span>
+        </div>
+      </div>
+      <Divider />
+      {/* Phan de item sidebar*/}
+      {SidebarData.map((item, index) => {
+        return <SubMenu item={item} key={index} />
+      })}
+    </div>
+  )
+
+  const container = window !== undefined ? () => window().document.body : undefined
   return (
-    <Box sx={{ display: 'flex' }} role="presentation">
+    <Box sx={{ display: 'flex'}}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
           <Header />
         </Toolbar>
       </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
+      <Box
+        component="nav"
+        sx={{ width: { md: drawerWidth }, flexShrink: { sm: 0 } ,zIndex:'1'}}
+        aria-label="dashboard"
       >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'block',md:'none'},
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'none', md: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` } }}
+      >
         <Toolbar />
-        <div>
-          <IconButton className="online" size="small" sx={{ ml: 2 }}>
-            <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-          </IconButton>
-          <span>Tấn Tài</span>
-        </div>
-        {/* Phan de item sidebar*/}
-        {SidebarData.map((item, index) => {
-          return <SubMenu item={item} key={index} />
-        })}
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
         {/* Phan de components con */}
         {childComponent}
-      </Main>
+      </Box>
     </Box>
   )
 }
 
-export default SideBar
+export default ResponsiveDrawer
