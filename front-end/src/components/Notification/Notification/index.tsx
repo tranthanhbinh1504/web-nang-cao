@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './style.css'
+import './style.scss'
 import Box from '@mui/material/Box'
 import NotiItem from '../NotificationItem/index'
 import {NotifiData} from '../NotifiData'

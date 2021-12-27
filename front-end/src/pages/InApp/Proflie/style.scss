@@ -1,3 +1,14 @@
 .profile {
     display: flex;
 }
+.formbtn_profile {
+    display: flex;
+    justify-content: right;
+}
+
+@media only screen and (max-width: 1400px) {
+    .img-profile img{
+      width: 300px;
+      height: 300px;
+    }
+}
