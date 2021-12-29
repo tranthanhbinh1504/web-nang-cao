@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
-import Sidebar from 'src/components/Sidebar/Sidebar'
+import Sidebar from 'src/components/Sidebar/sidebar'
 
 //schema validate of Add User Modal
 interface AddUserModal {
