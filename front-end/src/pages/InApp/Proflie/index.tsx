@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
-import Sidebar from 'src/components/Sidebar/Sidebar'
+import Sidebar from 'src/components/Sidebar/sidebar'
 import './style.scss'
 import Grid from '@mui/material/Grid'
 const drawerWidth = 240
