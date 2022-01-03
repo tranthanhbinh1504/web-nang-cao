@@ -22,7 +22,9 @@ const Header: React.FC = () => {
   }
 
   const logOut = () => {
+    localStorage.removeItem('token')
     history.push('/')
+    window.location.reload()
   }
   return (
     <div className='header-component'>
