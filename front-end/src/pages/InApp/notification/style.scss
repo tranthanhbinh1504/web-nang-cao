@@ -1,0 +1,37 @@
+.main-box-notification {
+    margin: auto;
+    width: 90%;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    &_header {
+        padding-top: 10px;
+        text-align: center;
+    }
+    &_field {
+        padding: 10px 0;
+    }
+    &_button {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+    }
+}
+
+#datePickerFromDate {
+    float: right;
+}
+
+// #datePickerToDate {
+//     width: 45%;
+//     float: right;
+// }
