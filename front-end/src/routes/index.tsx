@@ -6,9 +6,10 @@ import {
   Redirect
 } from 'react-router-dom'
 import Login from 'src/pages/auth/index'
-import DashBoard from 'src/pages/InApp/Dashboard'
-import Profile from 'src/pages/InApp/Proflie'
-import UserAdmin from 'src/pages/InApp/User'
+import DashBoard from 'src/pages/InApp/dashboard'
+import Profile from 'src/pages/InApp/profile'
+import UserAdmin from 'src/pages/InApp/user'
+
 
 
 const RootRouter = () => {

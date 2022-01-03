@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Footer from '../../../components/Footer/'
 import { Modal } from 'react-bootstrap'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -13,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
-import Sidebar from 'src/components/Sidebar/sidebar'
+import ResponsiveDrawer from 'src/components/sidebar'
 
 //schema validate of Add User Modal
 interface AddUserModal {
@@ -60,6 +59,11 @@ const Userdata = [
     email: 'khai@gmail.com',
     department: 'CNTT,KTPM',
   },
+  {
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
+    department: 'CNTT,KTPM',
+  },
 ]
 
 const UserAdmin = () => {
@@ -74,7 +78,7 @@ const UserAdmin = () => {
   //panigation
   const itemsPerPage = 6
   const [page, setPage] = React.useState(1)
-  const [noOfPages] = React.useState(
+  const [noOfPages,setNoOfPages] = React.useState(
     Math.ceil(Userdata.length / itemsPerPage)
   )
   const handleChangePage = (event:any, value:any) => {
@@ -83,6 +87,7 @@ const UserAdmin = () => {
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
     Userdata.push(data)
+    setNoOfPages(Math.ceil(Userdata.length / itemsPerPage))
   }
 
   const handleChange = (event:any) => {
@@ -211,7 +216,7 @@ const UserAdmin = () => {
   }
 
   return (
-    <Sidebar childComponent={
+    <ResponsiveDrawer childComponent={
       <div className="user-admin">
         <div className="container useradmin">
           <h4 className="header text-primary text-center text-uppercase">Danh sách người dùng</h4>
