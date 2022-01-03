@@ -9,6 +9,7 @@ import AddPost from 'src/components/uploadpost'
 import Post from 'src/components/post'
 import ResponsiveDrawer from 'src/components/sidebar'
 import CommentSection from 'src/components/commentSection'
+import Notification from 'src/components/notification'
 
 const drawerWidth = 240
 
@@ -57,43 +58,17 @@ const DashBoard = () => {
   const [data, setData] = useState(PostData)
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-  const [department, setDepartment] = useState('')
-  const { register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>()
+
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<AddUserModal>()
+
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
   }
-  const handleChange = (event:any) => {
-    setDepartment(event.target.value)
-  }
-  const commentEnterSubmit = (e:any) => {
-    if (e.key === 'Enter' && e.shiftKey == false) {
-      console.log(e.target.value)
-      e.preventDefault()
-    }
-  }
-  //event popup
-  const [popup, setPopup] = React.useState(null)
-  const openPopup = (event:any) => {
-    setPopup(event.currentTarget)
-  }
-  const [popupcomment, setPopupComment] = React.useState(null)
-  const openPopupComment = (event:any) => {
-    setPopupComment(event.currentTarget)
-  }
-  const openComment = Boolean(popupcomment)
-  const idComment = openComment ? 'comment-popover' : undefined
 
-  const openModal = (action: string, data?: any) => {
-    setModal(true)
-    setAction(action)
-    setPopup(null)
-    setPopupComment(null)
-
-  }
   const closeModal = () => {
     setModal(false)
-
   }
+
   const modalHeader = () => {
     return (
       <Modal.Title className='form_header'>
@@ -104,6 +79,7 @@ const DashBoard = () => {
       </Modal.Title>
     )
   }
+
   const modalBody = () => {
     return (
       <Modal.Body>
@@ -201,17 +177,8 @@ const DashBoard = () => {
       </Modal.Body>
     )
   }
-  const [showAllComment,setshowAllComment] = useState(false)
-  const [like,setLike] = useState(false)
-  const [editcomment,setEditComment] = useState(false)
-  const Editcomment = ( data:any ) => {
-    setEditComment(true)
-    setValue('editcomment',data.content)
-  }
 
   const actionPost = (value: any) => {
-    console.log(value)
-
     let newPost = [...data]
     newPost.push(value)
     setData(newPost)
@@ -221,170 +188,55 @@ const DashBoard = () => {
     <div className="dashboard">
       <ResponsiveDrawer childComponent={
         <>
-          <div className="dashboard">
-            <Box
-              sx={{
-                display:'flex',
-                justifyItems:'center',
-                maxWidth: 800,
-                height: 20,
-                margin:'0 auto'
-              }}
-              className='main-box-dashboard'
-            >
-              <Box  sx={{ width:'100%', height:'auto' }}>
-                <AddPost
-                  onActionPost={actionPost}
-                />
-                { data && data.map((item, index) =>
-                  (
-                    <div style={{padding: '16px 0'}} key={index}>
-                      <Post
-                        name={item.name}
-                        date={item.date}
-                        content={item.content}
-                        avaImgUrl={item.avaImgUrl}
-                        contentImgUrl={item.contentImgUrl}
-                        numLike={item.numLike}
-                        numCmt={item.numCmt}
-                        childComment={
-                          <CommentSection
-                            avaUser='https://cdn-icons-png.flaticon.com/512/147/147144.png'
-                            listComments={fakeCmt}
-                          />}
-                      />
-                    </div>
-                  )
-                )}
-
-
-
-                {/* {Data.map((data,index) => {
-                  return (
-                    <div className="socail-post-container cus-border" key={index}>
-                      <Post items={data}/>
-                      {
-                        data.comment.length > 1 ?
-                          <>
-                            {showAllComment ?
-                              <>
-                                {data.comment.map((content,indexcomment) => {
-                                  return(
-                                    <div className="comment" key={indexcomment}>
-                                      <div className="parentcomment user-profile">
-                                        <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                                        { editcomment ?
-                                          <>
-                                            <TextareaAutosize
-                                              id="editcomment"
-                                              placeholder='Viết bình luận công khai'
-                                              minRows={1}
-                                              {...register('editcomment')}
-                                              onKeyPress={commentEnterSubmit}
-                                            />
-                                          </>
-                                          :
-                                          <>
-                                            <p>{content.content}</p>
-                                          </>
-                                        }
-                                      </div>
-                                      <MoreHorizOutlinedIcon onClick={openPopupComment}/>
-                                      <Popover
-                                        id={idComment}
-                                        open={openComment}
-                                        anchorEl={popupcomment}
-                                        onClose={()=>setPopupComment(null)}
-                                        anchorOrigin={{
-                                          vertical: 'bottom',
-                                          horizontal: 'left',
-                                        }}
-                                        className='postpopup'
-                                      >
-                                        <div className='postpopup-item'>
-                                          <ColorizeOutlinedIcon />
-                                          <span onClick={()=>Editcomment(content)}>Chỉnh sửa bình luận</span>
-                                        </div>
-                                        <div className='postpopup-item'>
-                                          <DeleteOutlinedIcon />
-                                          <span onClick={() => openModal(ModalActionComment.DELETECOMMENT)}>Xóa bài bình luận</span>
-                                        </div>
-                                      </Popover>
-                                    </div>
-                                  )
-                                })}
-                              </>
-                              :
-                              <div className="loadmorecomment" onClick={()=>setshowAllComment(true)}>
-                                <span>Xem thêm bình luận</span>
-                              </div>
-                            }
-                          </>
-                          :
-                          <div>
-                            {data.comment.map((content,indexcomment) => {
-                              return(
-                                <div className="comment" key={indexcomment}>
-                                  <div className="parentcomment user-profile">
-                                    <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                                    <p>{content.content}</p>
-                                  </div>
-                                  <MoreHorizOutlinedIcon  onClick={openPopupComment}/>
-                                  <Popover
-                                    id={idComment}
-                                    open={openComment}
-                                    anchorEl={popupcomment}
-                                    onClose={()=>setPopupComment(null)}
-                                    anchorOrigin={{
-                                      vertical: 'bottom',
-                                      horizontal: 'left',
-                                    }}
-                                    className='postpopup'
-                                  >
-                                    <div className='postpopup-item'>
-                                      <ColorizeOutlinedIcon />
-                                      <span>Chỉnh sửa bình luận</span>
-                                    </div>
-                                    <div className='postpopup-item'>
-                                      <DeleteOutlinedIcon />
-                                      <span onClick={() => openModal(ModalActionComment.DELETECOMMENT)}>Xóa bài bình luận</span>
-                                    </div>
-                                  </Popover>
-                                </div>
-                              )
-                            })}
-                          </div>
-                      }
-                      <div className="postcomment">
-                        <div className="post-comment-parent user-profile">
-                          <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                          <TextareaAutosize
-                            id="postcomment"
-                            placeholder='Viết bình luận công khai'
-                            minRows={1}
-                            {...register('postcomment')}
-                            onKeyPress={commentEnterSubmit}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })} */}
-              </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-around'
+            }}
+          >
+            <Box  sx={{
+              maxWidth: 700,
+            }}>
+              <AddPost
+                onActionPost={actionPost}
+              />
+              { data && data.map((item, index) =>
+                (
+                  <div style={{padding: '16px 0'}} key={index}>
+                    <Post
+                      name={item.name}
+                      date={item.date}
+                      content={item.content}
+                      avaImgUrl={item.avaImgUrl}
+                      contentImgUrl={item.contentImgUrl}
+                      numLike={item.numLike}
+                      numCmt={item.numCmt}
+                      childComment={
+                        <CommentSection
+                          avaUser='https://cdn-icons-png.flaticon.com/512/147/147144.png'
+                          listComments={fakeCmt}
+                        />}
+                    />
+                  </div>
+                )
+              )}
             </Box>
-            <Modal
-              show={modal}
-              onHide={closeModal}
-              size="lg"
-              aria-labelledby="contained-modal-title-vcenter"
-              centered
-            >
-              { modalHeader() }
-              { modalBody() }
-            </Modal>
-          </div>
+            <Box sx={{paddingLeft: 4}}>
+              <Notification />
+            </Box>
+          </Box>
         </>
       }/>
+      <Modal
+        show={modal}
+        onHide={closeModal}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        { modalHeader() }
+        { modalBody() }
+      </Modal>
     </div>
   )
 }

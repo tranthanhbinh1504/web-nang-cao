@@ -11,13 +11,12 @@ const NotiItem: React.FC<Props> = ({
 }) => {
   return (
     <div className='notification-item'>
-
       <Box
         sx={{
-          width: 300,
+          maxWidth: 300,
+          minWidth: 250,
           height: 100,
           borderLeft:'3px solid black',
-          paddingLeft:'5px'
         }}
         className='box-noti'
       >

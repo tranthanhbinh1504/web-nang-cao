@@ -15,7 +15,7 @@ import {SidebarData} from 'src/utils/common'
 import Header from '../header'
 
 
-const drawerWidth = 330
+const drawerWidth = 260
 type Props = {
     childComponent? : any
 }

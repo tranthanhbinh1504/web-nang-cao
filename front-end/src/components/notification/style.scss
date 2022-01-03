@@ -1,17 +1,19 @@
-.NotiData {
-    margin-top: 150px;
-}
-.Noti-title {
+.noti {
+  &_title {
     font-size: 25px;
     font-weight: 700;
     margin-right: 10px;
-}
-.Noti-alldetails {
+  }
+  
+  &_all {
     font-size: 15px;
     margin-left: 5px;
+  }
 }
-@media only  screen and (max-width: 1375px) {
-    .notification {
-        display: none;
-    }
+
+
+@media only  screen and (max-width: 890px) {
+  .noti {
+      display: none;
+  }
 }
