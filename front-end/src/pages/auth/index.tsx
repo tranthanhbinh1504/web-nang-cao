@@ -44,7 +44,9 @@ const SignIn = () => {
 
   const onSubmit = (data: any) => {
     console.log(data)
+    localStorage.setItem('token','abcdef')
     history.push('dashboard')
+    window.location.reload()
   }
 
   return (

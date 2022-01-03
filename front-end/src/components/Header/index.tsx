@@ -23,6 +23,8 @@ function Header() {
 
   const logOut = () => {
     history.push('/')
+    localStorage.removeItem('token')
+    window.location.reload()
   }
   return (
     <div className='header-component'>

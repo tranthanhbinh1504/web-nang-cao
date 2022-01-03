@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,19 +9,22 @@ import Login from 'src/pages/auth/index'
 import DashBoard from 'src/pages/InApp/Dashboard'
 import Profile from 'src/pages/InApp/Proflie'
 import UserAdmin from 'src/pages/InApp/User'
-
+import ProtectedRoute from './ProtectedRoute'
+import LoginRoute from './LoginRoute'
 
 const RootRouter = () => {
+  const [token] = useState(localStorage.getItem('token'))
   return (
     <Router>
       <Switch>
         <Route exact path="/">
           <Redirect to="/login"/>
         </Route>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/dashboard" component={DashBoard}/>
-        <Route exact path="/listuser" component={UserAdmin}/>
-        <Route exact path="/profile" component={Profile}/>
+        <LoginRoute token={token} path="/login" component={Login} />
+
+        <ProtectedRoute  token={token} path="/dashboard" component={DashBoard}/>
+        <ProtectedRoute  token={token} path="/listuser" component={UserAdmin}/>
+        <ProtectedRoute  token={token} path="/profile" component={Profile}/>
       </Switch>
     </Router>
   )
