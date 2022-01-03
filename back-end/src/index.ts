@@ -9,6 +9,12 @@ const bodyParser = require('body-parser')
 // var express = require('express');
 const path = require('path');
 const User = require('./routes/User');
+const Author = require('./routes/auth');
+const Post = require('./routes/post');
+const Comment = require('./routes/comment');
+const passport = require('passport');
+
+
 const csrfProtection = csrf({ cookie: true })
 const parseForm = bodyParser.urlencoded({ extended: false })
 
@@ -26,8 +32,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(require("express-session")({key:'sessionId'}))
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+require('./config/passport');
+//passport
 
-app.use('/users', User);
+app.use(passport.initialize())
+app.use(passport.session());
+
+
+
+
+app.use('/api/user', User);
+app.use('/api/login', Author);
+app.use('/api/post', Post);
+app.use('/api/comment', Comment);
 
 app.get('/', (req, res) => {
   res.send('Hello')

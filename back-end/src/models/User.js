@@ -1,10 +1,19 @@
 // Mongoose db Connection
 var mongoose = require("mongoose");
 
-var userSchema = mongoose.Schema({
+const userStruct = mongoose.Schema({
   userName: String,
   password: String,
+  name: String,
+  class: String,
+  avatar: String,
+  department: [{
+    departmentID: String,
+    departmentName: String,
+  }],
+  role: String,
 });
 
-var User = mongoose.model("User", userSchema);
+const userSchema = new mongoose.Schema(userStruct);
+const User = mongoose.model('User', userSchema);
 module.exports = User;
