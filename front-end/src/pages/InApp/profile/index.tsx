@@ -1,15 +1,15 @@
-import * as React from 'react'
+import React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
-import Sidebar from 'src/components/Sidebar/sidebar'
 import './style.scss'
 import Grid from '@mui/material/Grid'
+import ResponsiveDrawer from 'src/components/sidebar'
+
 const drawerWidth = 240
 const Input = styled('input')({
   display: 'none',
@@ -124,7 +124,7 @@ const profile = (
 
 const Profile = () => {
   return (
-    <Sidebar childComponent={
+    <ResponsiveDrawer childComponent={
       <>
         <Box sx={{ display: 'flex',justifyContent:'center'}}>
           <Box>

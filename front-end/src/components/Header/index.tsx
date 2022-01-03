@@ -10,7 +10,7 @@ import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import { useHistory } from 'react-router-dom'
 
-function Header() {
+const Header: React.FC = () => {
   const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)

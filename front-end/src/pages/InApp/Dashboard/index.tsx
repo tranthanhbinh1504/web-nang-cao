@@ -1,57 +1,42 @@
-import Notification from '../../../components/Notification/Notification/index'
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
-import CommentIcon from '@mui/icons-material/Comment'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import ColorizeOutlinedIcon from '@mui/icons-material/ColorizeOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import './style.scss'
-import SideBar from 'src/components/Sidebar/sidebar'
 import { useForm } from 'react-hook-form'
 import {Button, Popover, TextareaAutosize } from '@mui/material'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import { Modal } from 'react-bootstrap'
+import AddPost from 'src/components/uploadpost'
+import Post from 'src/components/post'
+import CommentSection from './../../../components/comment/index'
+import ResponsiveDrawer from 'src/components/sidebar'
 
 const drawerWidth = 240
-const Data = [
+
+const fakeCmt = [
   {
-    id : '1',
-    username: 'abc',
-    date:'24/12/2021',
-    post :'Loren kahfkafhakfakhfakfafakfhakfhakf',
-    img : 'https://cdn.tgdd.vn/Files/2014/12/24/592178/do-phan-giai_800x450.png',
-    like: '150',
-    comment: [
-      {
-        userid: '1',
-        content: 'abcfafafafaf',
-      },
-    ]
+    avaUrl: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
+    name: 'Thanh Binh',
+    content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit'
   },
   {
-    id : '2',
-    username: 'bcsdaf',
-    date:'24/12/2021',
-    post :'Loren kahfkafhakfakhfakfafakfhakfhakf',
-    img : 'https://cdn.tgdd.vn/Files/2014/12/24/592178/do-phan-giai_800x450.png',
-    like: '150',
-    comment: [
-      {
-        userid : '1',
-        content :'afafafkaoiaucam;ậopajfajfpafjspajfoajfoff',
-      },
-      {
-        userid : '2',
-        content : 'abcà',
-      }
-    ]
+    avaUrl: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
+    name: 'Thu Nguyen',
+    content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit'
+  },
+]
+
+const PostData = [
+  {
+    name: 'Tran Thanh Binh',
+    date: 'Dec 23, 2020',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim tristique metus, a varius metus.',
+    avaImgUrl: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
+    contentImgUrl: 'https://i.ibb.co/3sWBHGQ/konosuba-unleash-crying-aqua.jpg',
+    numLike: 0,
+    numCmt: 6
   }
 ]
+
 enum ModalActionPost {
   ADD = 'ADD',
   EDIT = 'EDIT',
@@ -69,9 +54,10 @@ interface AddUserModal {
 }
 
 const DashBoard = () => {
+  const [data, setData] = useState(PostData)
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-  const [department, setDepartment] = React.useState('')
+  const [department, setDepartment] = useState('')
   const { register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>()
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
@@ -94,8 +80,6 @@ const DashBoard = () => {
   const openPopupComment = (event:any) => {
     setPopupComment(event.currentTarget)
   }
-  const openPost = Boolean(popup)
-  const idPost = openPost ? 'simple-popover' : undefined
   const openComment = Boolean(popupcomment)
   const idComment = openComment ? 'comment-popover' : undefined
 
@@ -104,18 +88,11 @@ const DashBoard = () => {
     setAction(action)
     setPopup(null)
     setPopupComment(null)
-    // if (data) {
-    //   setValue('fullname', data.fullname)
-    //   setValue('email', data.email)
-    //   setValue('department', data.department)
-    // }
+
   }
   const closeModal = () => {
     setModal(false)
-    setAction('')
-    // setValue('fullname', '')
-    // setValue('email', '')
-    // setValue('department', '')
+
   }
   const modalHeader = () => {
     return (
@@ -231,99 +208,61 @@ const DashBoard = () => {
     setEditComment(true)
     setValue('editcomment',data.content)
   }
+
+  const actionPost = (value: any) => {
+    console.log(value)
+
+    let newPost = [...data]
+    newPost.push(value)
+    setData(newPost)
+  }
+
   return (
     <div className="dashboard">
-      <SideBar childComponent={
+      <ResponsiveDrawer childComponent={
         <>
           <div className="dashboard">
             <Box
               sx={{
                 display:'flex',
                 justifyItems:'center',
-                width:'800px',
-                height:'20px',
+                maxWidth: 800,
+                height: 20,
                 margin:'0 auto'
               }}
               className='main-box-dashboard'
             >
-              <Box
-                sx= {{
-                  width:'100%',
-                  height:'auto',
-                }}
-              >
-                <div className="post-container cus-border">
-                  <div className="user-profile">
-                    <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                    <div className="postmodal"  onClick={() => openModal(ModalActionPost.ADD)}>
-                      <p>What is on your mind , show it?</p>
+              <Box  sx={{ width:'100%', height:'auto' }}>
+                <AddPost
+                  onActionPost={actionPost}
+                />
+                { data && data.map((item, index) =>
+                  (
+                    <div style={{padding: '16px 0'}} key={index}>
+                      <Post
+                        name={item.name}
+                        date={item.date}
+                        content={item.content}
+                        avaImgUrl={item.avaImgUrl}
+                        contentImgUrl={item.contentImgUrl}
+                        numLike={item.numLike}
+                        numCmt={item.numCmt}
+                        childComment={
+                          <CommentSection
+                            avaUser='https://cdn-icons-png.flaticon.com/512/147/147144.png'
+                            listComments={fakeCmt}
+                          />}
+                      />
                     </div>
-                  </div>
-                  <div className="input-container">
-                    <div className="add-post-links">
-                      <a href=""><AddPhotoAlternateIcon className='post-links-icon'/>Add photo/video</a>
-                      <a href=""><OndemandVideoIcon className='post-links-icon'/>Live Video</a>
-                    </div>
-                  </div>
-                </div>
-                {Data.map((data,index) => {
+                  )
+                )}
+
+
+
+                {/* {Data.map((data,index) => {
                   return (
-                    <div className="socail-post-container cus-border" key={data.id}>
-                      <div className="socail-post-row">
-                        <div className="user-profile">
-                          <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                          <div>
-                            <p>{data.username}</p>
-                            <span>{data.date}</span>
-                          </div>
-                        </div>
-                        <div>
-                          <KeyboardArrowDownIcon onClick={openPopup}/>
-                          <Popover
-                            id={idPost}
-                            open={openPost}
-                            anchorEl={popup}
-                            onClose={()=>setPopup(null)}
-                            anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'left',
-                            }}
-                            className='postpopup'
-                          >
-                            <div className='postpopup-item'>
-                              <ColorizeOutlinedIcon />
-                              <span onClick={() => openModal(ModalActionPost.EDIT)}>Chỉnh sửa bài viết</span>
-                            </div>
-                            <div className='postpopup-item'>
-                              <DeleteOutlinedIcon />
-                              <span onClick={() => openModal(ModalActionPost.DELETE)}>Xóa bài viết</span>
-                            </div>
-                          </Popover>
-                        </div>
-                      </div>
-                      <p className='socail-post-text'>
-                        {data.post}
-                        <img src={data.img} alt="post-img" />
-                      </p>
-                      <hr />
-                      <div className="socail-post-row">
-                        <div className="activity-icon">
-                          {like ?
-                            <>
-                              <div onClick={()=>setLike(false)}><ThumbUpOffAltIcon className='socail-icon' fontSize='large'/>{data.like}</div>
-                            </>
-                            :
-                            <>
-                              <div onClick={()=>setLike(true)} className='like-btn'><ThumbUpAltIcon className='socail-icon' fontSize='large'/>{data.like}</div>
-                            </>
-                          }
-                          <div><CommentIcon className='socail-icon' fontSize='large'/>{data.comment.length}</div>
-                        </div>
-                        <div>
-                          <Avatar sx={{width:'20px',height:'20px'}} src="https://cdn.tgdd.vn/Files/2014/12/24/592178/do-phan-giai_800x450.png"></Avatar>
-                        </div>
-                      </div>
-                      <hr />
+                    <div className="socail-post-container cus-border" key={index}>
+                      <Post items={data}/>
                       {
                         data.comment.length > 1 ?
                           <>
@@ -430,7 +369,7 @@ const DashBoard = () => {
                       </div>
                     </div>
                   )
-                })}
+                })} */}
               </Box>
             </Box>
             <Modal
