@@ -7,8 +7,8 @@ import {Button, Popover, TextareaAutosize } from '@mui/material'
 import { Modal } from 'react-bootstrap'
 import AddPost from 'src/components/uploadpost'
 import Post from 'src/components/post'
-import CommentSection from '../../../components/comment/index'
 import ResponsiveDrawer from 'src/components/sidebar'
+import CommentSection from 'src/components/commentSection'
 
 const drawerWidth = 240
 

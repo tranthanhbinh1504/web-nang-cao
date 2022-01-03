@@ -1,11 +1,9 @@
-import { Avatar, Popover, TextareaAutosize } from '@mui/material'
+import { Avatar, Popover } from '@mui/material'
 import React, { useState } from 'react'
 import CustomText from '../textarea'
 import './style.scss'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ColorizeOutlinedIcon from '@mui/icons-material/ColorizeOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 
 type Props = {
   listComments?: any,
