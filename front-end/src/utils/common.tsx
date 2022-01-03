@@ -1,6 +1,5 @@
 import React from 'react'
 import * as RiIcons from 'react-icons/ri'
-import * as IoIcons from 'react-icons/io'
 
 export const menuStyle = {
   elevation: 0,
@@ -31,27 +30,18 @@ export const menuStyle = {
 
 export const  SidebarData = [
   {
-    title: 'Trang chủ',
+    title: 'Home',
     path: '/dashboard',
-    icon:<RiIcons.RiHome2Fill/>,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
+    icon:<RiIcons.RiHome5Line/>,
   },
   {
     title: 'Notification',
     path: '/notification',
-    icon:<RiIcons.RiHome2Fill/>,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
+    icon:<RiIcons.RiNotification4Line/>,
   },
   {
     title: 'User',
     path: '/listuser',
-    icon:<RiIcons.RiHome2Fill/>,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
+    icon:<RiIcons.RiUserLine/>,
   },
 ]

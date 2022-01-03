@@ -1,5 +1,4 @@
 import * as React from 'react'
-import PropTypes from 'prop-types'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -8,11 +7,11 @@ import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Toolbar from '@mui/material/Toolbar'
-import Avatar from '@mui/material/Avatar'
 import SubMenu from '../menu'
 import './style.scss'
 import {SidebarData} from 'src/utils/common'
 import Header from '../header'
+import { useHistory } from 'react-router-dom'
 
 
 const drawerWidth = 260
@@ -27,23 +26,17 @@ const ResponsiveDrawer: React.FC<Props> = ({childComponent},props) =>{
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
+  const history = useHistory()
 
   const drawer = (
     <div>
-      <Toolbar />
       <Divider />
-      <div className='profile_sidebar'>
-        <IconButton className="online" size="small" sx={{ ml: 2 }}>
-          <Avatar
-            src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-            sx={{width: 50, height: 50}}
-          ></Avatar>
-        </IconButton>
-        <div className="titlename_sidebar">
-          <span>Tấn Tài</span>
-        </div>
+      <div className='wrapperSidebar' onClick={() => history.push('dashboard')}>
+        <img
+          src='https://stdportal.tdtu.edu.vn/images/LogoTDTBgWhite.png'
+          className='wrapperSidebar_img'
+        />
       </div>
-      <Divider />
       {/* Phan de item sidebar*/}
       {SidebarData.map((item, index) => {
         return <SubMenu item={item} key={index} />
