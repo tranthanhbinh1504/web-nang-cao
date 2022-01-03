@@ -1,0 +1,31 @@
+#icon-button-file {
+    display: none;
+}
+.file-upload {
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.file-upload p{
+    margin-bottom: 0;
+    margin-left: 10px
+}
+.form_btn-addpost {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    min-height: 35px;
+}
+.image-display {
+    margin-bottom: 10px;
+}
+.image-display img{
+    border-radius: 10px
+}
+.form_btn-addpost {
+    background-color: rgb(33, 33, 240);
+    color: #FFF;
+}

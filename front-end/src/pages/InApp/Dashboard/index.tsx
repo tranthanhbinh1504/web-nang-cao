@@ -1,22 +1,17 @@
-import Notification from '../../../components/Notification/Notification/index'
+import Notification from '../../../components/Notification/index'
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
-import CommentIcon from '@mui/icons-material/Comment'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import ColorizeOutlinedIcon from '@mui/icons-material/ColorizeOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import './style.scss'
-import SideBar from 'src/components/Sidebar/Sidebar'
+import SideBar from 'src/components/Sidebar'
 import { useForm } from 'react-hook-form'
 import {Button, Popover, TextareaAutosize } from '@mui/material'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import { Modal } from 'react-bootstrap'
-
+import AddPost from 'src/components/AddPost'
+import Postdashboard from 'src/components/Postdashboard'
 const drawerWidth = 240
 const Data = [
   {
@@ -94,8 +89,6 @@ const DashBoard = () => {
   const openPopupComment = (event:any) => {
     setPopupComment(event.currentTarget)
   }
-  const openPost = Boolean(popup)
-  const idPost = openPost ? 'simple-popover' : undefined
   const openComment = Boolean(popupcomment)
   const idComment = openComment ? 'comment-popover' : undefined
 
@@ -112,7 +105,6 @@ const DashBoard = () => {
   }
   const closeModal = () => {
     setModal(false)
-    setAction('')
     // setValue('fullname', '')
     // setValue('email', '')
     // setValue('department', '')
@@ -252,78 +244,14 @@ const DashBoard = () => {
                   height:'auto',
                 }}
               >
-                <div className="post-container cus-border">
-                  <div className="user-profile">
-                    <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                    <div className="postmodal"  onClick={() => openModal(ModalActionPost.ADD)}>
-                      <p>What is on your mind , show it?</p>
-                    </div>
-                  </div>
-                  <div className="input-container">
-                    <div className="add-post-links">
-                      <a href=""><AddPhotoAlternateIcon className='post-links-icon'/>Add photo/video</a>
-                      <a href=""><OndemandVideoIcon className='post-links-icon'/>Live Video</a>
-                    </div>
-                  </div>
-                </div>
+                {/* add post dashboard */}
+                <AddPost />
+
                 {Data.map((data,index) => {
                   return (
-                    <div className="socail-post-container cus-border" key={data.id}>
-                      <div className="socail-post-row">
-                        <div className="user-profile">
-                          <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-                          <div>
-                            <p>{data.username}</p>
-                            <span>{data.date}</span>
-                          </div>
-                        </div>
-                        <div>
-                          <KeyboardArrowDownIcon onClick={openPopup}/>
-                          <Popover
-                            id={idPost}
-                            open={openPost}
-                            anchorEl={popup}
-                            onClose={()=>setPopup(null)}
-                            anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'left',
-                            }}
-                            className='postpopup'
-                          >
-                            <div className='postpopup-item'>
-                              <ColorizeOutlinedIcon />
-                              <span onClick={() => openModal(ModalActionPost.EDIT)}>Chỉnh sửa bài viết</span>
-                            </div>
-                            <div className='postpopup-item'>
-                              <DeleteOutlinedIcon />
-                              <span onClick={() => openModal(ModalActionPost.DELETE)}>Xóa bài viết</span>
-                            </div>
-                          </Popover>
-                        </div>
-                      </div>
-                      <p className='socail-post-text'>
-                        {data.post}
-                        <img src={data.img} alt="post-img" />
-                      </p>
-                      <hr />
-                      <div className="socail-post-row">
-                        <div className="activity-icon">
-                          {like ?
-                            <>
-                              <div onClick={()=>setLike(false)}><ThumbUpOffAltIcon className='socail-icon' fontSize='large'/>{data.like}</div>
-                            </>
-                            :
-                            <>
-                              <div onClick={()=>setLike(true)} className='like-btn'><ThumbUpAltIcon className='socail-icon' fontSize='large'/>{data.like}</div>
-                            </>
-                          }
-                          <div><CommentIcon className='socail-icon' fontSize='large'/>{data.comment.length}</div>
-                        </div>
-                        <div>
-                          <Avatar sx={{width:'20px',height:'20px'}} src="https://cdn.tgdd.vn/Files/2014/12/24/592178/do-phan-giai_800x450.png"></Avatar>
-                        </div>
-                      </div>
-                      <hr />
+                    <div className="socail-post-container cus-border" key={index}>
+                      {/* Post in dashboard */}
+                      <Postdashboard items={data}/>
                       {
                         data.comment.length > 1 ?
                           <>

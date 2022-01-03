@@ -7,19 +7,15 @@ import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import Footer from '../../components/Footer'
 import './style.scss'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
-import { deepOrange, deepPurple } from '@mui/material/colors'
-
+import { Redirect, useHistory,useLocation } from 'react-router-dom'
 
 const schema = yup.object().shape({
   user: yup.string()
@@ -32,9 +28,7 @@ const schema = yup.object().shape({
     .min(8, 'Minimum 8 characters')
 })
 
-const theme = createTheme()
-
-const SignIn = () => {
+const SignIn= () => {
   const history = useHistory()
   const {
     register,
@@ -44,9 +38,10 @@ const SignIn = () => {
 
   const onSubmit = (data: any) => {
     console.log(data)
+    localStorage.setItem('token','abcdef')
     history.push('dashboard')
+    window.location.reload()
   }
-
   return (
     <div>
       <div className='login-page'>

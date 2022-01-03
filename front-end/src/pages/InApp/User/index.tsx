@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
-import Sidebar from 'src/components/Sidebar/Sidebar'
+import Sidebar from 'src/components/Sidebar'
 
 //schema validate of Add User Modal
 interface AddUserModal {
@@ -60,6 +60,11 @@ const Userdata = [
     email: 'khai@gmail.com',
     department: 'CNTT,KTPM',
   },
+  {
+    fullname: 'Nguyễn abc',
+    email: 'khai@gmail.com',
+    department: 'CNTT,KTPM',
+  },
 ]
 
 const UserAdmin = () => {
@@ -74,7 +79,7 @@ const UserAdmin = () => {
   //panigation
   const itemsPerPage = 6
   const [page, setPage] = React.useState(1)
-  const [noOfPages] = React.useState(
+  const [noOfPages,setNoOfPages] = React.useState(
     Math.ceil(Userdata.length / itemsPerPage)
   )
   const handleChangePage = (event:any, value:any) => {
@@ -83,6 +88,7 @@ const UserAdmin = () => {
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
     Userdata.push(data)
+    setNoOfPages(Math.ceil(Userdata.length / itemsPerPage))
   }
 
   const handleChange = (event:any) => {
