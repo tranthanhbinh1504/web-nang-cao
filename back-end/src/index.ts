@@ -1,6 +1,7 @@
-const port = 3000
+const port = 5000
 import express from 'express'
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+const mongoose = require('mongoose')
 
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser')
@@ -16,12 +17,14 @@ const passport = require('passport');
 
 
 const csrfProtection = csrf({ cookie: true })
-const parseForm = bodyParser.urlencoded({ extended: false })
+// const parseForm = bodyParser.urlencoded({ extended: false })
 
 
 
 // var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/cuoiKi');
+mongoose.Promise = global.Promise;
+
 
 const app = express();
 // view engine setup
@@ -31,8 +34,10 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // app.use(require("express-session")({key:'sessionId'}))
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 require('./config/passport');
@@ -40,6 +45,22 @@ require('./config/passport');
 
 app.use(passport.initialize())
 app.use(passport.session());
+
+
+// upload image
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 
 
 

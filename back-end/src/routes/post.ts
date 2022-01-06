@@ -3,6 +3,27 @@ var router = express.Router();
 const Post = require('../models/Post')
 var verifiedToken = require('../apis/token');
 var multer = require('multer')
+// thêm handle upload start
+// TO DO .env
+var urlLoadImage = 'http://localhost:5000/'
+
+const storage = multer.diskStorage({
+	destination: function (req: any, file: any, cb: any) {
+		if (file.mimetype === 'image/jpeg' 
+				|| file.mimetype === 'image/png' 
+				|| file.mimetype === 'image/jpg') {
+			cb(null, 'src/uploads')
+		} else {
+			cb(new Error('not image'), false)
+		}
+	},
+	filename: function(req: any, file:any, cb: any) {
+		cb(null, file.originalname + Date.now() + '.jpg')
+	}
+})
+var upload = multer({storage:storage})
+
+// thêm handle upload end
 
 // get all post
 router.get('/', verifiedToken, function(req: any, res: any) {
@@ -41,40 +62,24 @@ router.get('/:id', verifiedToken, function(req: any, res: any) {
 });
 
 // post/create
-router.post('/', verifiedToken, function(req: any, res: any) {
+router.post('/', verifiedToken, upload.single('imgUpload'), function(req: any, res: any) {
+	const file = req.file;
+	if (!file) {
+		return res.send(500, 'Please upload a file');
+	}
 	var post = Post({
 		content: req.body.content,
 		title: req.body.title,
 		userId: req.body.userId,
 		dateTime: new Date(),
-		img: req.file.path,
-		record: req.file.path,
+		img: urlLoadImage + file.filename,
+		record: req.body.record,
 		department: req.body.department,
 	});
 	post.save(function(err: any, po: any){
 		if(err) return res.send(500, 'Error occurred: database error.');
-		// res.json({id: po._id});
-	}).then((result: any) => {
-		console.log(result);
-		res.status(201).json({
-		  message: "Created product successfully",
-		  createdProduct: {
-			  name: result.name,
-			  price: result.price,
-			  _id: result._id,
-			  request: {
-				  type: 'GET',
-				  url: "http://localhost:3000/products/" + result._id
-			  }
-		  }
-		});
-	  })
-	  .catch((err: any) => {
-		console.log(err);
-		res.status(500).json({
-		  error: err
-		});
-	  });
+		res.json({id: po._id});
+	})
 });
 
 
