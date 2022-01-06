@@ -44,7 +44,12 @@ const CustomText: React.FC<Props> = ({
   const handleInput = (event: any) => {
     if (event.keyCode === 13 && !event.shiftKey ) {
       onAction(value)
-      setValue('')
+    }
+  }
+
+  const keyPress = (e: any) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
     }
   }
 
@@ -56,6 +61,7 @@ const CustomText: React.FC<Props> = ({
       className={'textarea boxsizingBorder'}
       onChange={(e) => handleChange(e)}
       onKeyUp={(e) => handleInput(e)}
+      onKeyPress={(e) => keyPress(e)}
     />
   )
 }

@@ -24,6 +24,19 @@
   &_edit {
     margin-left: auto;
   }
+
+  &_action {
+    cursor: pointer;
+    width: 300px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+  }
+
+  &_action:hover {
+    background-color: #F2F2F2;
+  }
 }
 
 .content {

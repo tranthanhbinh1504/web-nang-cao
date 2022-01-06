@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import Avatar from '@mui/material/Avatar'
-import {Button, Popover } from '@mui/material'
-import ColorizeOutlinedIcon from '@mui/icons-material/ColorizeOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import {Button, Popover,TextareaAutosize,IconButton } from '@mui/material'
 import { Modal } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import './style.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp, faCommentAlt } from '@fortawesome/free-regular-svg-icons'
-
+import Box from '@mui/material/Box'
+import PhotoCamera from '@material-ui/icons/PhotoCamera'
 enum ModalActionPost {
   EDIT = 'EDIT',
   DELETE = 'DELETE',
@@ -43,24 +42,35 @@ const Post: React.FC<Props> = (
   }) => {
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
+  const [contentdata, setContentdata] = useState(content)
   const { register, handleSubmit,setValue, formState: { errors } } = useForm()
   const onSubmit = (data:any) =>{
-    console.log(data)
+    setContentdata(data.post)
+    content=data.post
+    setModal(false)
   }
-
+  const [image, setImage] = useState<string | undefined>('')
   const [popup, setPopup] = React.useState(null)
   const openPopup = (event:any) => {
     setPopup(event.currentTarget)
   }
-
   const [like,setLike] = useState(false)
   const openPost = Boolean(popup)
   const idPost = openPost ? 'simple-popover' : undefined
 
+  const loadImage = (evt: any) => {
+    if (evt.target.files.length > 0) {
+      setImage(URL.createObjectURL(evt.target.files[0]))
+    }
+  }
   const openModal = (action: string, data?: any) => {
     setModal(true)
     setAction(action)
     setPopup(null)
+    if(action === ModalActionPost.EDIT){
+      setValue('post',content)
+      setImage(contentImgUrl)
+    }
   }
 
   const closeModal = () => {
@@ -75,12 +85,55 @@ const Post: React.FC<Props> = (
       </Modal.Title>
     )
   }
+
   const modalBody = () => {
     return (
       <Modal.Body>
         {
           (action === ModalActionPost.EDIT) &&
           <>
+            <div className="socail-post-row">
+              <div className="user-profile">
+                <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
+                <div>
+                  <p>Tấn Tài</p>
+                </div>
+              </div>
+            </div>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              className='modalBody'
+            >
+              <TextareaAutosize
+                aria-label="empty textarea"
+                placeholder="What's on your mind"
+                minRows={2}
+                className='textarea-post'
+                {...register('post')}
+              />
+              {image &&
+                <img src={image} alt="img" className="imageUpload" />
+              }
+              <div className='file-upload'>
+                <p>Thêm vào bài viết</p>
+                <input accept="image/*" id="icon-button-file" type="file" onChange={(evt) => loadImage(evt)}/>
+                <label htmlFor="icon-button-file">
+                  <IconButton color="primary" aria-label="upload picture" component="span">
+                    <PhotoCamera />
+                  </IconButton>
+                </label>
+              </div>
+              <Button
+                variant="contained"
+                type='submit'
+                fullWidth
+                className='submitBtn'
+              >
+                Đăng
+              </Button>
+            </Box>
           </>
         }
         { action === ModalActionPost.DELETE &&
@@ -115,6 +168,7 @@ const Post: React.FC<Props> = (
       </Modal.Body>
     )
   }
+
   return(
     <div className='root'>
 
@@ -135,22 +189,19 @@ const Post: React.FC<Props> = (
               vertical: 'bottom',
               horizontal: 'left',
             }}
-            className='postpopup'
           >
-            <div className='postpopup-item'>
-              <ColorizeOutlinedIcon />
-              <span onClick={() => openModal(ModalActionPost.EDIT)}>Chỉnh sửa bài viết</span>
+            <div className='avatar_action' onClick={() => openModal(ModalActionPost.EDIT)}>
+              <span>Edit</span>
             </div>
-            <div className='postpopup-item'>
-              <DeleteOutlinedIcon />
-              <span onClick={() => openModal(ModalActionPost.DELETE)}>Xóa bài viết</span>
+            <div className='avatar_action' onClick={() => openModal(ModalActionPost.DELETE)}>
+              <span >Delete</span>
             </div>
           </Popover>
         </div>
       </div>
 
       <div className='content'>
-        {content}
+        {contentdata}
       </div>
       { contentImgUrl && <img className='contentImg' src={contentImgUrl} />}
 
@@ -192,6 +243,16 @@ const Post: React.FC<Props> = (
       <div className='comment'>
         {childComment}
       </div>
+
+      <Modal
+        show={modal}
+        onHide={closeModal}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        { modalHeader() }
+        { modalBody() }
+      </Modal>
 
 
     </div>

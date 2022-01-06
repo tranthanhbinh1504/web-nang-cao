@@ -17,12 +17,12 @@ const fakeCmt = [
   {
     avaUrl: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
     name: 'Thanh Binh',
-    content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit'
+    content: 'Nequcqqcqcr sit'
   },
   {
     avaUrl: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
     name: 'Thu Nguyen',
-    content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit'
+    content: 'Neque pvavavavm ipsum quia dolor sit'
   },
 ]
 

@@ -56,19 +56,36 @@ const AddPost:React.FC<Props> = ({
     setModal(false)
   }
 
-  const modalHeader = () => {
-    return (
-      <Modal.Title className='form_header'>
-        {action === ModalActionPost.ADD && <div>Tạo bài viết</div>}
-      </Modal.Title>
-    )
-  }
-
-  const modalBody = () => {
-    return (
-      <Modal.Body style={{overflow: 'auto'}}>
-        {
-          (action === ModalActionPost.ADD &&
+  return (
+    <div className="post-container cus-border">
+      <div className="user-profile">
+        <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
+        <div className="postmodal"  onClick={() => openModal(ModalActionPost.ADD)}>
+          <p>What is on your mind , show it?</p>
+        </div>
+      </div>
+      <div className="input-container">
+        <div className="add-post-links">
+          <a href="" onClick={() => openModal(ModalActionPost.ADD)}>
+            <AddPhotoAlternateIcon className='post-links-icon'/>Add photo/video
+          </a>
+          <a href="">
+            <OndemandVideoIcon className='post-links-icon'/>Live Video
+          </a>
+        </div>
+      </div>
+      <Modal
+        show={modal}
+        onHide={closeModal}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Title className='form_header'>
+          {action === ModalActionPost.ADD && <div>Tạo bài viết</div>}
+        </Modal.Title>
+        <Modal.Body style={{overflow: 'auto'}}>
+          {
+            (action === ModalActionPost.ADD &&
           <>
             <div className="socail-post-row">
               <div className="user-profile">
@@ -113,38 +130,9 @@ const AddPost:React.FC<Props> = ({
               </Button>
             </Box>
           </>
-          )
-        }
-      </Modal.Body>
-    )
-  }
-
-  return (
-    <div className="post-container cus-border">
-      <div className="user-profile">
-        <Avatar src="https://cdn-icons-png.flaticon.com/512/147/147144.png"></Avatar>
-        <div className="postmodal"  onClick={() => openModal(ModalActionPost.ADD)}>
-          <p>What is on your mind , show it?</p>
-        </div>
-      </div>
-      <div className="input-container">
-        <div className="add-post-links">
-          <a href="" onClick={() => openModal(ModalActionPost.ADD)}>
-            <AddPhotoAlternateIcon className='post-links-icon'/>Add photo/video
-          </a>
-          <a href="">
-            <OndemandVideoIcon className='post-links-icon'/>Live Video
-          </a>
-        </div>
-      </div>
-      <Modal
-        show={modal}
-        onHide={closeModal}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        { modalHeader() }
-        { modalBody() }
+            )
+          }
+        </Modal.Body>
       </Modal>
     </div>
   )
