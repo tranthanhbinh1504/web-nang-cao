@@ -26,7 +26,6 @@ passport.use( new GoogleStrategy({
     passReqToCallback   : true
   },
 function(request, accessToken, refreshToken, profile, done) {
-
     User.findOne({
             'userName': profile.emails[0].value, 
         }, function(err, user) {
@@ -37,7 +36,6 @@ function(request, accessToken, refreshToken, profile, done) {
         if (!user) {
             // let regexEmail = "^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(student.tdtu.edu)\.vn$";
             let regexEmail = "^[a-z0-9](\.?[a-z0-9]){5,}@?(student.tdtu.edu)\.vn$";
-
             let email = profile.emails[0].value;
             if (email.match(regexEmail)) {
                 console.log(1)

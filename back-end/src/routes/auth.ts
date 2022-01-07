@@ -53,19 +53,24 @@ router.get('/auth/google' ,
 
 router.get( '/auth/google/callback',
     passport.authenticate( 'google', {
-        successRedirect: '/api/login/home',
-        failureRedirect: '/api/login',
+        successRedirect: '/api/login/dashboard',
+        failureRedirect: '/api/login/backtologin',
         failureFlash: true
 }));
 
 /* GET home page. */
-router.get('/home', function(req: any, res: any, next: any) {
-	res.render('index', { title: 'Home' });
+router.get('/dashboard', function(req: any, res: any, next: any) {
+	// res.render('index', { title: 'Home' });
+	var user = req.user;
+	const token = generateAccessToken({ username: user.userName });
+	return res.json({token:token, user:user,message:'Đăng nhập thành công'});
 });
   
 /* GET home page. */
-router.get('/', function(req: any, res: any, next: any) {
-	res.render("login", { title: "Login" });
+router.get('/backtologin', function(req: any, res: any, next: any) {
+	// res.render("login", { title: "Login" });
+	res.status(404)
+	return res.json({message: "Sai tài khoản hoặc mật khẩu"})
 });
 
 module.exports = router;

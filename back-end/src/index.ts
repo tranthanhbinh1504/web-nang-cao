@@ -1,6 +1,8 @@
 const port = 5000
 import express from 'express'
-// import mongoose from 'mongoose';
+// import mongoose from 'mongoose'
+
+// const express = require('express')
 const mongoose = require('mongoose')
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser')
@@ -13,6 +15,7 @@ const Author = require('./routes/auth');
 const Post = require('./routes/post');
 const Comment = require('./routes/comment');
 const passport = require('passport');
+const cors = require('cors')
 
 
 const csrfProtection = csrf({ cookie: true })
@@ -43,7 +46,7 @@ require('./config/passport');
 app.use(passport.initialize())
 app.use(passport.session());
 
-
+app.use(cors())
 // upload image
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

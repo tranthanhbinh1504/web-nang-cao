@@ -20,9 +20,13 @@ import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { deepOrange, deepPurple } from '@mui/material/colors'
 import { authLogin } from 'src/api/auth'
+import {googleLogin} from 'src/api/googleLogin'
 import Alert from '@mui/material/Alert'
 import { useEffect, useState } from 'react'
 import AlertError from 'src/components/alert'
+import axios from 'axios'
+import { GoogleLogin } from 'react-google-login'
+import Cookie from 'js-cookie'
 
 const schema = yup.object().shape({
   username: yup.string()
@@ -34,6 +38,13 @@ const schema = yup.object().shape({
     .max(32, 'Maximum 32 characters')
     .min(8, 'Minimum 8 characters')
 })
+
+const axiosApiCall = (url: any, method: any, body = {}) =>
+  axios({
+    method,
+    url,
+    data: body,
+  })
 
 const theme = createTheme()
 
@@ -51,8 +62,17 @@ const SignIn = () => {
     authLogin(data).then(()=>{
       history.push('dashboard')
       window.location.reload()
-    }).catch(err => {
+    }).catch((err: any) => {
       setAlertdata(err.response.data.message)
+    })
+  }
+
+  const onSuccess = (response: any) => {
+    const access_token = response.accessToken
+    axiosApiCall('http://localhost:5000/api/login/auth/google', 'get', { access_token }).then((res) => {
+      const { user, token } = res.data
+      Cookie.set('token', token)
+      history.push('dashboard')
     })
   }
 
@@ -126,8 +146,14 @@ const SignIn = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {'Don\'t have an account? Sign Up'}
+                  <GoogleLogin
+                    clientId={'747749520089-9uiv8cd656l7ts1lpd2s4tm0t2pdairb.apps.googleusercontent.com'}
+                    buttonText="Sign up with Google"
+                    onSuccess={onSuccess}
+                    onFailure={() => {}}
+                  />
+                  <Link href="http://localhost:5000/api/login/auth/google" variant="body2">
+                    {'Login with Google'}
                   </Link>
                 </Grid>
               </Grid>

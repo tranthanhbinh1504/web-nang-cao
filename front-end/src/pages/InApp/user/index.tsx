@@ -13,7 +13,7 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
 import ResponsiveDrawer from 'src/components/sidebar'
-import {getListUser} from 'src/api/user'
+// import {getListUser} from 'src/api/user'
 //schema validate of Add User Modal
 interface AddUserModal {
   fullname: string

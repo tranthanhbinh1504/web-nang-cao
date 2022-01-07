@@ -1,9 +1,9 @@
 import React from 'react'
 import axios from 'axios'
 
-export const authLogin = (user:any) => {
+export const googleLogin = () => {
   return (
-    axios.post('http://localhost:5000/api/login/',user)
+    axios.get('http://localhost:5000/api/login/auth/google')
       .then((res: any) => {
         if(res.data.token && res.data.user) {
           localStorage.setItem('token',res.data.token)
