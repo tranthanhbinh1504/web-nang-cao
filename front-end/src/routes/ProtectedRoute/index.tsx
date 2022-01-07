@@ -5,7 +5,7 @@ interface Props extends RouteProps {
   token?: string| null,
 }
 const ProtectedRoute = ( {token,...routeProps}: Props) => {
-  if (token == 'abcdef') {
+  if (token) {
     return <Route {...routeProps}/>
   }
   return <Redirect to='/login' />

@@ -19,10 +19,13 @@ import './style.scss'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { deepOrange, deepPurple } from '@mui/material/colors'
-
+import { authLogin } from 'src/api/auth'
+import Alert from '@mui/material/Alert'
+import { useEffect, useState } from 'react'
+import AlertError from 'src/components/alert'
 
 const schema = yup.object().shape({
-  user: yup.string()
+  username: yup.string()
     .required('Your name is required')
     .max(32, 'Maximum 32 characters')
     .min(8, 'Minimum 8 characters'),
@@ -42,15 +45,20 @@ const SignIn = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
 
+  const [alertdata,setAlertdata] = useState('')
   const onSubmit = (data: any) => {
-    console.log(data)
-    localStorage.setItem('token','abcdef')
-    history.push('dashboard')
-    window.location.reload()
+
+    authLogin(data).then(()=>{
+      history.push('dashboard')
+      window.location.reload()
+    }).catch(err => {
+      setAlertdata(err.response.data.message)
+    })
   }
 
   return (
     <div>
+      <AlertError alertdata={alertdata} />
       <div className='login-page'>
         <CssBaseline />
         <Grid item xs={12}>
@@ -82,7 +90,7 @@ const SignIn = () => {
                 label="Username"
                 autoComplete="user"
                 autoFocus
-                {...register('user')}
+                {...register('username')}
                 helperText= {errors.user?.message}
               />
               <TextField

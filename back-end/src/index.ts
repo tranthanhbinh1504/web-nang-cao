@@ -2,7 +2,6 @@ const port = 5000
 import express from 'express'
 // import mongoose from 'mongoose';
 const mongoose = require('mongoose')
-
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser')
 const csrf = require('csurf')
@@ -18,8 +17,6 @@ const passport = require('passport');
 
 const csrfProtection = csrf({ cookie: true })
 // const parseForm = bodyParser.urlencoded({ extended: false })
-
-
 
 // var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/cuoiKi');

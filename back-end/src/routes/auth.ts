@@ -3,6 +3,7 @@ var router = express.Router();
 const authorizeUser = require('../models/User')
 var bcrypt = require('bcrypt');
 const passport = require('passport');
+
 // const saltRounds = 10;
 
 
@@ -30,15 +31,16 @@ router.post('/', function(req: any, res: any) {
 	var password = req.body.password;
 	authorizeUser.findOne({ userName: userName}, (error: any, user: any) => {
 		if(error || !user) {
-			return res.json({success: false, msg: 'Không tìm thấy email trong dữ liệu'})
+			res.status(404)
+			return res.json({message: "Tài khoản không tồn tại"})
 		}
-		
 		bcrypt.compare(password, user.password).then( function(result: any) {
 			if(result){
 				const token = generateAccessToken({ username: user.userName });
-				return res.json(token);
+				return res.json({token:token,user:user,message:'Đăng nhập thành công'});
 			}
-			res.json({success: false, msg: 'sai email hoac mk'})
+			res.status(404)
+			return res.json({message: "Sai tài khoản hoặc mật khẩu"})
 		});
 	});
 })

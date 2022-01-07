@@ -23,6 +23,7 @@ const Header: React.FC = () => {
 
   const logOut = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     history.push('/')
     window.location.reload()
   }

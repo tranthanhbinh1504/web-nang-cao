@@ -4,7 +4,7 @@ interface Props extends RouteProps {
   token?: string| null,
 }
 const LoginRoute = ({token,...routeProps}: Props) => {
-  if (token == 'abcdef') {
+  if (token) {
     return <Redirect to='/dashboard' />
   }
   return <Route {...routeProps} />

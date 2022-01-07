@@ -9,7 +9,7 @@ var verifiedToken = require('../apis/token');
 
 
 // list user
-router.get('/', verifiedToken, function(req: any, res: any){
+router.get('/', function(req: any, res: any){
 	User.find( function(err: any, a: any){
 		if(err) return res.send(500, 'Error occurred: database error.');
 		res.json(a.map((a: any) => {
@@ -35,7 +35,7 @@ router.get('/:id', verifiedToken, function(req: any, res: any){
 });
 
 // add one user - admin function
-router.post('/', verifiedToken, function(req: any, res: any){
+router.post('/', function(req: any, res: any){
 	bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
 		var newUser = new User({
 			userName: req.body.username,

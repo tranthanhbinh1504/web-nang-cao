@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 var createError = require('http-errors');
 // var express = require('express');
 var path = require('path');
-
 var users = require('./routes/index');
 
 // var mongoose = require('mongoose');

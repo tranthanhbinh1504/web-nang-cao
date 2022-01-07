@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -13,7 +13,7 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
 import ResponsiveDrawer from 'src/components/sidebar'
-
+import {getListUser} from 'src/api/user'
 //schema validate of Add User Modal
 interface AddUserModal {
   fullname: string
@@ -214,7 +214,14 @@ const UserAdmin = () => {
       </Modal.Body>
     )
   }
-
+  // const [userdata, setUserdata] = useState([])
+  // useEffect(() => {
+  //   getListUser().then((data)=>{
+  //     setUserdata(data)
+  //   })
+  //   return () => {}
+  // }, [])
+  // console.log(userdata)
   return (
     <ResponsiveDrawer childComponent={
       <div className="user-admin">
