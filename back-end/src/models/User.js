@@ -2,13 +2,13 @@
 var mongoose = require("mongoose");
 
 const userStruct = mongoose.Schema({
-  userName: String,
+  username: String,
   password: String,
   name: String,
   class: String,
   avatar: String,
   department: [{
-    departmentID: String,
+    departmentID:String,
     departmentName: String,
   }],
   role: String,

@@ -4,21 +4,23 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import  './style.scss'
-import { useForm,Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
 import Pagination from '@mui/material/Pagination'
 import ResponsiveDrawer from 'src/components/sidebar'
-import {getListUser} from 'src/api/user'
+import {createNewUser, deleteUser, editUser, getListUser} from 'src/api/user'
+import {getDepartmentList} from 'src/api/department'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import AlertError from 'src/components/alert'
+
 //schema validate of Add User Modal
 interface AddUserModal {
-  fullname: string
-  email: string
-  department: string
+  name: string
+  username: string
+  department: []
+  password:string
+  role:string
 }
 
 enum ModalAction {
@@ -26,90 +28,93 @@ enum ModalAction {
   EDIT = 'EDIT',
   DELETE = 'DELETE',
 }
-
 const schema = yup.object({
-  fullname: yup.string().required(),
-  email: yup.string().required(),
-  department: yup.string().required(),
+  name: yup.string().required(),
+  username: yup.string().required(),
+  department: yup.array().required(),
+  password: yup.string().required(),
+  role: yup.string().required(),
 }).required()
-
-const Userdata = [
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-  {
-    fullname: 'Nguyễn abc',
-    email: 'khai@gmail.com',
-    department: 'CNTT,KTPM',
-  },
-]
 
 const UserAdmin = () => {
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-  const [department, setDepartment] = React.useState('')
 
-  const { register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>({
+  const {control, register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>({
     resolver: yupResolver(schema)
   })
-
+  const [userdata, setUserdata] = useState<any>()
+  const [departmentlist, setDepartmentList] = useState<any>()
+  const [alertdata,setAlertdata] = useState('')
+  const [selectvalue,setSelectValue] = useState([])
   //panigation
   const itemsPerPage = 6
-  const [page, setPage] = React.useState(1)
-  const [noOfPages,setNoOfPages] = React.useState(
-    Math.ceil(Userdata.length / itemsPerPage)
-  )
+  const [page, setPage]= useState(1)
+  const [noOfPages,setNoOfPages]= useState(1)
+
+  useEffect(() => {
+    getDataUser()
+    getDataDepartment()
+  }, [])
+
+  const getDataUser = () => {
+    getListUser().then((data)=>{
+      setUserdata(data)
+      setNoOfPages(Math.ceil(data.length / itemsPerPage))
+    })
+  }
+  const getDataDepartment = () => {
+    getDepartmentList().then((data)=>{
+      setDepartmentList(data)
+    })
+  }
+  const delUser = (data:any) => {
+    deleteUser(data,{setAlertdata}).then(()=>{
+      setModal(false)
+    }).catch(err => {
+      setAlertdata(err.response.data.message)
+    })
+  }
+  const editUers = (data:any) => {
+    editUser(data,{setAlertdata}).then(()=>{
+      setModal(false)
+    }).catch(err => {
+      setAlertdata(err.response.data.message)
+    })
+  }
+
   const handleChangePage = (event:any, value:any) => {
     setPage(value)
   }
-  const onSubmit = (data: AddUserModal) =>{
-    console.log(data)
-    Userdata.push(data)
-    setNoOfPages(Math.ceil(Userdata.length / itemsPerPage))
-  }
 
-  const handleChange = (event:any) => {
-    setDepartment(event.target.value)
+  const onSubmit = (data: AddUserModal) =>{
+    createNewUser(data,{setAlertdata}).then(()=>{
+      getDataUser()
+    }).catch(err => {
+      setAlertdata(err.response.data.message)
+    })
+    setNoOfPages(Math.ceil(userdata.length / itemsPerPage))
   }
 
   const openModal = (action: string, data?: any) => {
     setModal(true)
     setAction(action)
+    console.log(data)
     if (action === ModalAction.ADD) {
-      setValue('fullname', '')
-      setValue('email', '')
-      setValue('department', '')
+      setValue('name', '')
+      setValue('username', '')
+      setValue('role', '')
+      setValue('password', '')
+      setValue('department', [])
     }
     if (data) {
-      setValue('fullname', data.fullname)
-      setValue('email', data.email)
-      setValue('department', data.department)
+      setValue('name', data.name)
+      setValue('username', data.username)
+      setValue('role', data.role)
     }
   }
 
-  const closeModal = () => {
+  const closeModal = (data:any) => {
     setModal(false)
   }
 
@@ -134,40 +139,81 @@ const UserAdmin = () => {
               <TextField
                 required
                 fullWidth
-                label="FullName"
-                autoComplete="fullname"
+                label="Name"
+                autoComplete="name"
                 autoFocus
-                {...register('fullname')}
-                helperText= {errors.fullname?.message}
+                {...register('name')}
+                helperText= {errors.name?.message}
               />
             </div>
             <div className='form_field'>
               <TextField
                 required
                 fullWidth
-                label="Email"
-                autoComplete="Email"
+                label="Username"
+                autoComplete="username"
                 autoFocus
-                {...register('email')}
-                helperText= {errors.email?.message}
+                {...register('username')}
+                helperText= {errors.username?.message}
               />
             </div>
             <div className='form_field'>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Department</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  label="Department"
-                  fullWidth
-                  required
-                  {...register('department')}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={'1'}>a</MenuItem>
-                  <MenuItem value={'2'}>b</MenuItem>
-                  <MenuItem value={'3'}>c</MenuItem>
-                </Select>
-              </FormControl>
+              <TextField
+                required
+                fullWidth
+                label="Password"
+                autoComplete="password"
+                autoFocus
+                {...register('password')}
+                helperText= {errors.password?.message}
+              />
+            </div>
+            <div className='form_field'>
+              <Controller
+                name="department"
+                control={control}
+                defaultValue={[]}
+                render={({ field }) => (
+                  <div>
+                    <InputLabel id="Department">Department</InputLabel>
+                    <Select
+                      {...field}
+                      labelId="Department"
+                      label="department"
+                      multiple
+                      fullWidth
+                      defaultValue={[]}
+                    >
+                      {departmentlist.map((items:any,index:any) => (
+                        <MenuItem value={items.id} key={index}>
+                          {items.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
+                )}
+              />
+            </div>
+            <div className='form_field'>
+              <Controller
+                name="role"
+                control={control}
+                defaultValue={''}
+                render={({ field }) => (
+                  <div>
+                    <InputLabel id="role">Role</InputLabel>
+                    <Select
+                      {...field}
+                      labelId="role"
+                      label="role"
+                      fullWidth
+                    >
+                      <MenuItem value={'Admin'}>Admin</MenuItem>
+                      <MenuItem value={'Department'}>Department</MenuItem>
+                    </Select>
+                  </div>
+                )}
+              />
             </div>
             <div className='form_btn'>
               <Button
@@ -214,17 +260,11 @@ const UserAdmin = () => {
       </Modal.Body>
     )
   }
-  // const [userdata, setUserdata] = useState([])
-  // useEffect(() => {
-  //   getListUser().then((data)=>{
-  //     setUserdata(data)
-  //   })
-  //   return () => {}
-  // }, [])
-  // console.log(userdata)
   return (
     <ResponsiveDrawer childComponent={
       <div className="user-admin">
+        <AlertError alertdata={alertdata} />
+
         <div className="container useradmin">
           <h4 className="header text-primary text-center text-uppercase">Danh sách người dùng</h4>
           <button
@@ -240,33 +280,36 @@ const UserAdmin = () => {
                 <th>STT</th>
                 <th>Họ và tên</th>
                 <th>Email</th>
+                <th>Role</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              {Userdata
-                .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-                .map((user,index) => {
-                  return(
-                    <tr key={index+1}>
-                      <td>{itemsPerPage*(page-1)+index+1}</td>
-                      <td>{user.fullname}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-outline-primary btn-edit-delete"
-                          onClick={() => openModal(ModalAction.EDIT, user)}>
-                            Chỉnh sửa
-                        </button>
-                        <button
-                          className="btn btn-sm btn-outline-danger btn-edit-delete"
-                          onClick={() => openModal(ModalAction.DELETE)}>
-                            Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                })}
+              {userdata &&
+                userdata
+                  .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                  .map(( user: any, index: number ) => {
+                    return(
+                      <tr key={index+1}>
+                        <td>{itemsPerPage*(page-1)+index+1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.username}</td>
+                        <td>{user.role}</td>
+                        <td>
+                          <button
+                            className="btn btn-sm btn-outline-primary btn-edit-delete"
+                            onClick={() => openModal(ModalAction.EDIT, user)}>
+                              Chỉnh sửa
+                          </button>
+                          <button
+                            className="btn btn-sm btn-outline-danger btn-edit-delete"
+                            onClick={() => openModal(ModalAction.DELETE,user.id)}>
+                              Xóa
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })}
             </tbody>
           </table>
           <Pagination

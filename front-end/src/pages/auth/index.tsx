@@ -105,11 +105,6 @@ const SignIn = () => {
                 {...register('password')}
                 helperText= {errors.password?.message}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-                style={{display:'block'}}
-              />
               <Button
                 className="login-btn"
                 type="submit"

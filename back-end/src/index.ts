@@ -12,6 +12,7 @@ const User = require('./routes/User');
 const Author = require('./routes/auth');
 const Post = require('./routes/post');
 const Comment = require('./routes/comment');
+const Department = require('./routes/department')
 const passport = require('passport');
 
 
@@ -66,6 +67,7 @@ app.use('/api/user', User);
 app.use('/api/login', Author);
 app.use('/api/post', Post);
 app.use('/api/comment', Comment);
+app.use('/api/department', Department);
 
 app.get('/', (req, res) => {
   res.send('Hello')
