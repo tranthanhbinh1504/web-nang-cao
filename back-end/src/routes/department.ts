@@ -15,4 +15,13 @@ router.get('/', function(req: any, res: any){
 	});
 });
 
+router.post('/', verifiedToken, function(req: any, res: any) {
+	var de = Department({
+		name: req.body.name,
+	});
+	de.save(function(err: any, d: any){
+		if(err) return res.send(500, 'Error occurred: database error.');
+		res.json({id: d._id});
+	});
+});
 module.exports = router;

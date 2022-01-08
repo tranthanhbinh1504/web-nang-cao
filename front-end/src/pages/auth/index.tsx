@@ -35,6 +35,14 @@ const schema = yup.object().shape({
     .min(8, 'Minimum 8 characters')
 })
 
+// const axiosApiCall = (url: any, method: any, body = {}) =>
+//   axios({
+//     method,
+//     url,
+//     data: body,
+//     headers: {'Access-Control-Allow-Origin': '*'},
+//   })
+
 const theme = createTheme()
 
 const SignIn = () => {
@@ -55,6 +63,17 @@ const SignIn = () => {
       setAlertdata(err.response.data.message)
     })
   }
+
+  // const onSuccess = (response: any) => {
+  //   const access_token = response.accessToken
+  //   axiosApiCall('http://localhost:5000/api/login/auth/google', 'get', { access_token }).then((res) => {
+  //     const { user, token } = res.data
+  //     console.log(res.data)
+  //     console.log('test get data')
+  //     Cookie.set('token', token)
+  //     history.push('dashboard')
+  //   })
+  // }
 
   return (
     <div>

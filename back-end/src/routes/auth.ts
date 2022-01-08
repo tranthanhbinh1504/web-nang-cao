@@ -49,7 +49,11 @@ router.post('/', function(req: any, res: any) {
 router.get('/auth/google' ,
   passport.authenticate('google', { scope:
       [ 'email', 'profile' ] }
-)); 
+)
+// function(req: any, res: any, next: any) {
+// 	res.json({abc: 'abc'})
+// } 
+); 
 
 router.get( '/auth/google/callback',
     passport.authenticate( 'google', {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Select from '@mui/material/Select'
 import { useForm, Controller } from 'react-hook-form'
@@ -16,6 +16,7 @@ import Grid from '@mui/material/Grid'
 import './style.scss'
 import ResponsiveDrawer from 'src/components/sidebar'
 import TableNotification from 'src/components/tableNotification'
+import { getDepartmentList } from 'src/api/department'
 
 interface searchInfor {
   notificationName: string
@@ -23,13 +24,10 @@ interface searchInfor {
   department: string
   notificationType: string
 }
-function formatDate(date: any) {
+
+const formatDate = (date: any) => {
   return new Date(date).toLocaleDateString()
 }
-// yup.date().min(
-//   yup.ref('originalEndDate'),
-//   ({ min }) => `Date needs to be before ${formatDate(min)}!!`,
-// )
 
 const schema = yup.object({
   notificationName: yup.string(),
@@ -38,14 +36,26 @@ const schema = yup.object({
   notificationType: yup.string(),
 })
 
-const NotificationsPage = () => {
+const NotificationsPage: React.FC = () => {
   const [handleChangeEvent, setHandleChangeEvent] = React.useState('')
   const [fromDate, setValueFromDate] = React.useState<Date | null>(null)
   const [toDate, setValueToDate] = React.useState<Date | null>(null)
+  const [departmentlist, setDepartmentList] = useState<any>()
+  const [selectvalue,setSelectValue] = useState<string[]>([])
 
   const { control, register, handleSubmit, formState: { errors } } = useForm<searchInfor>({
     resolver: yupResolver(schema)
   })
+
+  useEffect(() => {
+    getDataDepartment()
+  }, [])
+
+  const getDataDepartment = () => {
+    getDepartmentList().then((data) => {
+      setDepartmentList(data)
+    })
+  }
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -54,7 +64,13 @@ const NotificationsPage = () => {
     console.log(handleChangeEvent)
   }
   const handleChange = (event:any) => {
-    setHandleChangeEvent(event.target.value)
+    // setHandleChangeEvent(event.target.value)
+    const {
+      target: { value },
+    } = event
+    setSelectValue(
+      typeof value === 'string' ? value.split(',') : value,
+    )
   }
 
   return (
@@ -69,11 +85,12 @@ const NotificationsPage = () => {
                     <TextField
                       required
                       fullWidth
-                      label="Tìm kiếm theo tên thông báo"
-                      autoComplete="Tìm kiếm theo tên thông báo"
+                      label="Search by notification's name"
+                      autoComplete="Search by notification's name"
                       autoFocus
                       {...register('notificationName')}
                       helperText= {errors.notificationName?.message}
+                      key={'notificationName'}
                     />
                   </div>
                 </Grid>
@@ -82,8 +99,8 @@ const NotificationsPage = () => {
                     <TextField
                       required
                       fullWidth
-                      label="Tìm kiếm trong nội dung thông báo"
-                      autoComplete="Tìm kiếm trong nội dung thông báo"
+                      label="Search by notification's content"
+                      autoComplete="Search by notification's content"
                       autoFocus
                       {...register('notificationContent')}
                       helperText= {errors.notificationContent?.message}
@@ -96,15 +113,20 @@ const NotificationsPage = () => {
                       <InputLabel id="demo-simple-select-label">Department</InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
-                        label="Chọn Khoa/Phòng"
+                        label="Choose Department"
                         fullWidth
                         required
                         {...register('department')}
                         onChange={handleChange}
+                        value={selectvalue}
                       >
-                        <MenuItem value={'CNTT'}>Công nghệ thông tin</MenuItem>
-                        <MenuItem value={'Accounting'}>Kế toán</MenuItem>
-                        <MenuItem value={'Medicine'}>Dược</MenuItem>
+                        {departmentlist && departmentlist.map((items: any, index: number) => (
+                          <div key={index}>
+                            <MenuItem value={items.id} >
+                              {items.name}
+                            </MenuItem>
+                          </div>
+                        ))}
                       </Select>
                     </FormControl>
                   </div>
@@ -112,10 +134,10 @@ const NotificationsPage = () => {
                 <Grid item xs={4}>
                   <div className='form_field'>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Chọn thể loại</InputLabel>
+                      <InputLabel id="demo-simple-select-label">Choose notification type</InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
-                        label="Chọn thể loại"
+                        label="Choose notification's type"
                         fullWidth
                         required
                         {...register('notificationType')}
