@@ -46,7 +46,7 @@ const UserAdmin = () => {
   const [userdata, setUserdata] = useState<any>()
   const [departmentlist, setDepartmentList] = useState<any>()
   const [alertdata,setAlertdata] = useState('')
-  const [selectvalue,setSelectValue] = useState([])
+  const [selectvalue,setSelectValue] = useState<string[]>([])
   //panigation
   const itemsPerPage = 6
   const [page, setPage]= useState(1)
@@ -88,6 +88,13 @@ const UserAdmin = () => {
   }
 
   const onSubmit = (data: AddUserModal) =>{
+    const newValue = {
+      name : data.name,
+      username : data.username,
+      role: data.role,
+      password: data.password,
+      department: selectvalue
+    }
     createNewUser(data,{setAlertdata}).then(()=>{
       getDataUser()
     }).catch(err => {
@@ -96,10 +103,18 @@ const UserAdmin = () => {
     setNoOfPages(Math.ceil(userdata.length / itemsPerPage))
   }
 
+  const handleChange = (event: any) => {
+    const {
+      target: { value },
+    } = event
+    setSelectValue(
+      typeof value === 'string' ? value.split(',') : value,
+    )
+  }
+
   const openModal = (action: string, data?: any) => {
     setModal(true)
     setAction(action)
-    console.log(data)
     if (action === ModalAction.ADD) {
       setValue('name', '')
       setValue('username', '')
@@ -111,13 +126,20 @@ const UserAdmin = () => {
       setValue('name', data.name)
       setValue('username', data.username)
       setValue('role', data.role)
+      console.log(data.department)
+      let temp: string[] = []
+
+      data.department.map((item:any) => {
+        temp.push(item.departmentID)
+        console.log(item.departmentID)
+      })
+      setSelectValue(temp)
     }
   }
 
   const closeModal = (data:any) => {
     setModal(false)
   }
-
 
   const modalHeader = () => {
     return (
@@ -169,30 +191,23 @@ const UserAdmin = () => {
               />
             </div>
             <div className='form_field'>
-              <Controller
-                name="department"
-                control={control}
-                defaultValue={[]}
-                render={({ field }) => (
-                  <div>
-                    <InputLabel id="Department">Department</InputLabel>
-                    <Select
-                      {...field}
-                      labelId="Department"
-                      label="department"
-                      multiple
-                      fullWidth
-                      defaultValue={[]}
-                    >
-                      {departmentlist.map((items:any,index:any) => (
-                        <MenuItem value={items.id} key={index}>
-                          {items.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </div>
-                )}
-              />
+              <div>
+                <InputLabel id="Department">Department</InputLabel>
+                <Select
+                  labelId="Department"
+                  label="department"
+                  multiple
+                  fullWidth
+                  onChange={handleChange}
+                  value={selectvalue}
+                >
+                  {departmentlist.map((items:any,index:any) => (
+                    <MenuItem value={items.id} key={index}>
+                      {items.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
             </div>
             <div className='form_field'>
               <Controller
