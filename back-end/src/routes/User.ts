@@ -12,7 +12,7 @@ var verifiedToken = require('../apis/token');
 
 
 // list user
-router.get('/', function(req: any, res: any){
+router.get('/', verifiedToken, function(req: any, res: any){
 	User.find( function(err: any, a: any){
 		if(err) return res.send(500, 'Error occurred: database error.');
 		res.json(a.map((a: any) => {
@@ -29,7 +29,7 @@ router.get('/', function(req: any, res: any){
 });
 
 // user detail
-router.get('/:id', function(req: any, res: any){
+router.get('/:id', verifiedToken, function(req: any, res: any){
 	User.findById(req.params.id, function(err: any, a: any){
 		if(err) return res.send(500, 'Error occurred: database error.');
 		res.json({
@@ -41,7 +41,7 @@ router.get('/:id', function(req: any, res: any){
 });
 
 // add one user - admin function
-router.post('/', function(req: any, res: any){
+router.post('/', verifiedToken, function(req: any, res: any){
 	var department: { departmentID: any;departmentName:any }[] = []
 	var departmentlist = req.body.department;
 	departmentlist.forEach((item: any)=> {
@@ -73,7 +73,7 @@ router.post('/', function(req: any, res: any){
 })
 
 // edit one user
-router.put('/:id', function(req: any, res: any){
+router.put('/:id', verifiedToken, function(req: any, res: any){
 	User.findById(req.params.id, function(err: any, u: any) {
         if(err) return res.status(500).send({message:'Error occured: database error'});
         if(!u) return res.send(404, 'Id not found');
@@ -111,7 +111,7 @@ router.put('/changePassword/:id', verifiedToken, function(req: any, res: any){
 })
 
 // delete user
-router.delete('/:id', function(req: any, res: any){
+router.delete('/:id', verifiedToken, function(req: any, res: any){
     User.findById(req.params.id, function(err: any, u:any){
         if (err)
             return res.send(500, 'Error occured: database error.');

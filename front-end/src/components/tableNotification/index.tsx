@@ -22,8 +22,8 @@ const TableNotification: React.FC<Props>  = ({
   const noOfPages = item && item.length > 1 ? Math.ceil(item.length / itemsPerPage) : 1
   const history = useHistory()
 
-  const moveToDetail = () => {
-    history.push('notificationDetail')
+  const moveToDetail = (notificationId: any) => {
+    history.push(`/notificationDetail/${notificationId}`)
   }
 
   const handleChangePage = (event:any, value:any) => {
@@ -43,7 +43,7 @@ const TableNotification: React.FC<Props>  = ({
                       <h4>{row.title}</h4>
                       <p>{row.content}</p>
                       <div>
-                        <a className='detailLink' onClick={() => moveToDetail()}>Chi tiết thông báo</a>
+                        <a className='detailLink' onClick={() => moveToDetail(row.id)}>Chi tiết thông báo</a>
                         <p className='notificationDate'>{row.department} | {row.dateTime}</p>
                       </div>
                     </div>

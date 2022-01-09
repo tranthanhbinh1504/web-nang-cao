@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
+import { useHistory } from 'react-router-dom'
 import './style.scss'
 
 type Props = {
@@ -9,6 +10,13 @@ type Props = {
 const NotiItem: React.FC<Props> = ({
   item
 }) => {
+
+  const history = useHistory()
+
+  const moveToDetail = (notificationId: any) => {
+    history.push(`/notificationDetail/${notificationId}`)
+  }
+
   return (
     <div className='notification-item'>
       <Box
@@ -24,7 +32,7 @@ const NotiItem: React.FC<Props> = ({
         <span className="subTitle">[{item.department}]</span>
         <span className="subTitle">-</span>
         <span className="subTitle">{item.dateTime}</span>
-        <a href=""><h6 className='title'>{item.title}</h6></a>
+        <a className='detailLink' onClick={() => moveToDetail(item.id)}><h6 className='title'>{item.title}</h6></a>
         <div className="detail-noti">{item.content}</div>
       </Box>
       <hr/>

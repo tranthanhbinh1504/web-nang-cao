@@ -26,7 +26,7 @@ const RootRouter = () => {
         <ProtectedRoute token={token} path="/listuser" component={UserAdmin}/>
         <ProtectedRoute token={token} path="/profile" component={Profile}/>
         <ProtectedRoute token={token} path="/notification" component={NotificationsPage}/>
-        <ProtectedRoute token={token} path="/notificationDetail" component={NotificationDetail}/>
+        <ProtectedRoute token={token} path="/notificationDetail/:id/" component={NotificationDetail}/>
       </Switch>
     </Router>
   )

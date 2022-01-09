@@ -27,10 +27,6 @@ interface searchInfor {
   notificationType: string
 }
 
-const formatDate = (date: any) => {
-  return new Date(date).toLocaleDateString()
-}
-
 const schema = yup.object({
   notificationName: yup.string(),
   notificationContent: yup.string(),
@@ -56,11 +52,11 @@ const NotificationsPage: React.FC = () => {
   }, [])
 
   const getAllNotificationData = () => {
-    notification().then((value) => {
+    notification().then((value: any) => {
       setNotificationData(value)
     })
   }
-
+  console.log(notificationData)
 
   const getDataDepartment = () => {
     getDepartmentList().then((data) => {
@@ -69,7 +65,7 @@ const NotificationsPage: React.FC = () => {
   }
 
   const onSubmit = (data: any) => {
-    notificationSearchData(data.notificationName, data.notificationContent, data.department).then((value) => {
+    notificationSearchData(data.notificationName, data.notificationContent, data.department).then((value: any) => {
       setNotificationData(value)
     })
   }
