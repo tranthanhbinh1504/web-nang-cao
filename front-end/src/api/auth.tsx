@@ -7,7 +7,8 @@ export const authLogin = (user:any) => {
       .then(res => {
         if(res.data.token && res.data.user) {
           localStorage.setItem('token',res.data.token)
-          localStorage.setItem('user',res.data.user)
+          localStorage.setItem('userid',res.data.user._id)
+          localStorage.setItem('role',res.data.user.role)
         }
         return res.data
       })

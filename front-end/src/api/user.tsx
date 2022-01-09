@@ -61,3 +61,22 @@ export const deleteUser = (userid: any,{setAlertdata, setAlert}: Props) => {
       })
   )
 }
+export const detailUser = (userid: any ) => {
+  console.log()
+  return (
+    axios.get( `${API_URL}${userid}`)
+      .then(res => {
+        return  res.data
+      })
+  )
+}
+export const changePassword = (userid: any, user:any,{setAlertdata, setAlert}: Props) => {
+  return (
+    axios.put( API_URL + 'changePassword/'+ userid,user)
+      .then(res => {
+        setAlertdata(res.data.message)
+        setAlert(true)
+        return  res.data
+      })
+  )
+}

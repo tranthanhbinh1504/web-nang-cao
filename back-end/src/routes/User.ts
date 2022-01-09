@@ -36,6 +36,8 @@ router.get('/:id', verifiedToken, function(req: any, res: any){
 			id: a._id,
 			username: a.username,
 			password: a.password,
+			name:a.name,
+			department: a.department,
 		});
 	});
 });
@@ -73,7 +75,15 @@ router.post('/', verifiedToken, function(req: any, res: any){
 })
 
 // edit one user
-router.put('/:id', verifiedToken, function(req: any, res: any){
+router.put('/:id',verifiedToken, function(req: any, res: any){
+	var department: { departmentID: any;departmentName:any }[] = []
+	var departmentlist = req.body.department;
+	departmentlist.forEach((item: any)=> {
+		Department.findOne({_id:item}, (err:any,temp:any)=> {
+			department.push({departmentID:item,departmentName:temp.name})
+		})
+		
+	});
 	User.findById(req.params.id, function(err: any, u: any) {
         if(err) return res.status(500).send({message:'Error occured: database error'});
         if(!u) return res.send(404, 'Id not found');
@@ -81,21 +91,21 @@ router.put('/:id', verifiedToken, function(req: any, res: any){
 			// u.userName = req.body.username;
 			u.username = req.body.username ? req.body.username: u.username,
 			u.name = req.body.name ?req.body.name :u.name,
-			u.class = req.body.class ?req.body.class :u.class ,
+			u.class = req.body.class ?req.body.class : u.class ,
 			u.avatar = req.body.avatar ? req.body.avatar : u.avatar,
-			u.department = req.body.department? [req.body.department] : [u.department] ,
-			u.role = req.body.role? req.body.role :u.role
+			u.department = req.body.department? department :[ u.department] ,
+			u.role = req.body.role? req.body.role :u.role,
 		
 			u.save(function(err: any, u: any){
 				if(err) return res.status(500).send({message:err});
-				res.json({id: u._id,message:'Chỉnh sữa người dùng thành công'});
+				res.json({id: u._id,message:'Chỉnh sửa người dùng thành công'});
 			});
 		// })
 	});
 })
 
 // change password TO DO: confirm pass => chuyen sang auth-login
-router.put('/changePassword/:id', verifiedToken, function(req: any, res: any){
+router.put('/changePassword/:id',verifiedToken, function(req: any, res: any){
 	User.findById(req.params.id, function(err: any, u: any) {
         if(err) return res.send(500, 'Error occured: database error');
         if(!u) return res.send(404, 'Id not found');
@@ -104,7 +114,7 @@ router.put('/changePassword/:id', verifiedToken, function(req: any, res: any){
 		
 			u.save(function(err: any, u: any){
 				if(err) return res.send(500, 'Error occurred: database error.');
-				res.json({id: u._id});
+				res.json({id: u._id,message:'Chỉnh sửa mật khẩu thành công'});
 			});
 		})
 	});
