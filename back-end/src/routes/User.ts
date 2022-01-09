@@ -4,7 +4,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var Department = require('../models/Department');
-
+var Post = require('../models/Post')
+var Comments = require('../models/Comment')
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 var verifiedToken = require('../apis/token');
@@ -49,25 +50,25 @@ router.post('/', function(req: any, res: any){
 		})
 		
 	});
-	User.find({username: req.body.username}, function(error: any, user: any) {
-		if (!user) {
-			bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
-				var newUser = new User({
-					username: req.body.username,
-					password: hash,
-					name: req.body.name,
-					class: req.body.class,
-					avatar: req.body.avatar,
-					department: department,
-					role: req.body.role
-				})
-				newUser.save((err: any, user: any) => {
-				  if(err) return res.json({success: false, msg: err})
-				  res.json({id: user._id,message:'Tạo người dùng thành công'});
-				})
-			})
+	User.findOne({username: req.body.username}, function(error: any, user: any) {
+		if (user) {
+			return res.json({success: false, msg:'Người dùng đã tồn tại, xin chọn userName khác.'});
 		}
-		return res.json({success: false, msg:'Người dùng đã tồn tại, xin chọn userName khác.'});
+		bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
+			var newUser = new User({
+				username: req.body.username,
+				password: hash,
+				name: req.body.name,
+				class: req.body.class,
+				avatar: 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
+				department: department,
+				role: req.body.role
+			})
+			newUser.save((err: any, newUser: any) => {
+			  if(err) return res.json({success: false, msg: err})
+			  res.json({id: newUser._id,message:'Tạo người dùng thành công'});
+			})
+		})
 	})
 })
 
@@ -117,9 +118,13 @@ router.delete('/:id', function(req: any, res: any){
         if (!u)
             return res.send(404, 'Id not found');
         u.delete( function(err: any, u: any){
-            if (err)
-                return res.send(500, 'Error occured: database error.');
-            res.json({message:'Xóa người dùng thành công'})
+			if (err)
+				return res.send(500, 'Error occured: database error.');
+            res.json({
+                id: u._id,
+                username: u.username,
+                password: u.password,
+            })
         })
     })
 })

@@ -17,6 +17,8 @@ import './style.scss'
 import ResponsiveDrawer from 'src/components/sidebar'
 import TableNotification from 'src/components/tableNotification'
 import { getDepartmentList } from 'src/api/department'
+import { notification } from 'src/api/notification'
+import { notificationSearchData } from 'src/api/notification'
 
 interface searchInfor {
   notificationName: string
@@ -33,13 +35,14 @@ const schema = yup.object({
   notificationName: yup.string(),
   notificationContent: yup.string(),
   department: yup.string(),
-  notificationType: yup.string(),
+  // notificationType: yup.string(),
 })
 
 const NotificationsPage: React.FC = () => {
   const [handleChangeEvent, setHandleChangeEvent] = React.useState('')
-  const [fromDate, setValueFromDate] = React.useState<Date | null>(null)
-  const [toDate, setValueToDate] = React.useState<Date | null>(null)
+  // const [fromDate, setValueFromDate] = React.useState<Date | null>(null)
+  // const [toDate, setValueToDate] = React.useState<Date | null>(null)
+  const [notificationData, setNotificationData] = useState<any>()
   const [departmentlist, setDepartmentList] = useState<any>()
   const [selectvalue,setSelectValue] = useState<string[]>([])
 
@@ -49,7 +52,15 @@ const NotificationsPage: React.FC = () => {
 
   useEffect(() => {
     getDataDepartment()
+    getAllNotificationData()
   }, [])
+
+  const getAllNotificationData = () => {
+    notification().then((value) => {
+      setNotificationData(value)
+    })
+  }
+
 
   const getDataDepartment = () => {
     getDepartmentList().then((data) => {
@@ -58,17 +69,16 @@ const NotificationsPage: React.FC = () => {
   }
 
   const onSubmit = (data: any) => {
-    console.log(data)
-    console.log(fromDate)
-    console.log(toDate)
-    console.log(handleChangeEvent)
+    notificationSearchData(data.notificationName, data.notificationContent, data.department).then((value) => {
+      setNotificationData(value)
+    })
   }
   const handleChange = (event:any) => {
     // setHandleChangeEvent(event.target.value)
     const {
       target: { value },
     } = event
-    setSelectValue(
+    setHandleChangeEvent(
       typeof value === 'string' ? value.split(',') : value,
     )
   }
@@ -80,7 +90,7 @@ const NotificationsPage: React.FC = () => {
           <div className='searchNotification'>
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2}>
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                   <div className='form_field'>
                     <TextField
                       required
@@ -94,7 +104,7 @@ const NotificationsPage: React.FC = () => {
                     />
                   </div>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                   <div className='form_field'>
                     <TextField
                       required
@@ -118,20 +128,21 @@ const NotificationsPage: React.FC = () => {
                         required
                         {...register('department')}
                         onChange={handleChange}
-                        value={selectvalue}
+                        // value={selectvalue}
                       >
+                        <MenuItem value={''}>
+                          -
+                        </MenuItem>
                         {departmentlist && departmentlist.map((items: any, index: number) => (
-                          <div key={index}>
-                            <MenuItem value={items.id} >
-                              {items.name}
-                            </MenuItem>
-                          </div>
+                          <MenuItem value={items.name} key={index}>
+                            {items.name}
+                          </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </div>
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <div className='form_field'>
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Choose notification type</InputLabel>
@@ -183,7 +194,7 @@ const NotificationsPage: React.FC = () => {
                       />
                     </LocalizationProvider>
                   </div>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={2} className='button'>
                   <div>
                     <Button
@@ -199,7 +210,7 @@ const NotificationsPage: React.FC = () => {
             </Box>
           </div>
           <hr />
-          <TableNotification />
+          <TableNotification item={notificationData} />
         </Box>
       </div>
     }/>

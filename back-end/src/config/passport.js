@@ -28,7 +28,7 @@ passport.use( new GoogleStrategy({
 function(request, accessToken, refreshToken, profile, done) {
 
     User.findOne({
-            'userName': profile.emails[0].value, 
+            'username': profile.emails[0].value, 
         }, function(err, user) {
         if (err) {
             return done(err);

@@ -64,16 +64,6 @@ const SignIn = () => {
     })
   }
 
-  // const onSuccess = (response: any) => {
-  //   const access_token = response.accessToken
-  //   axiosApiCall('http://localhost:5000/api/login/auth/google', 'get', { access_token }).then((res) => {
-  //     const { user, token } = res.data
-  //     console.log(res.data)
-  //     console.log('test get data')
-  //     Cookie.set('token', token)
-  //     history.push('dashboard')
-  //   })
-  // }
 
   return (
     <div>
@@ -133,18 +123,6 @@ const SignIn = () => {
               >
                 Sign In
               </Button>
-              <Grid container className='item-btn'>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {'Don\'t have an account? Sign Up'}
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Grid>

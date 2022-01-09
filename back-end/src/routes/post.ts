@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const Post = require('../models/Post')
+var Post = require('../models/Post')
 var User = require('../models/User')
 var Comments = require('../models/Comment')
 var verifiedToken = require('../apis/token');
@@ -55,23 +55,18 @@ router.get('/search', function(req: any, res: any){
 	const title = req.query['title']
 	const content = req.query['content']
 	const department = req.query['department']
-	console.log(title)
-	console.log(content)
-	console.log(department)
 	const match = {
-		title: title ? title : { $exists: true },
-		content: content ? content : { $exists: true },
-		department: department? department : { $exists: true }
+		title: title ? new RegExp(`${title}`) : { $exists: true },
+		content: content ? new RegExp(`${content}`) : { $exists: true },
+		department: department? new RegExp(`${department}`) : { $exists: true }
 	}
-
-	// User.find({ role: "Admin" }, function(err: any, user: any) {
+	User.find({ role: "Admin" }, function(err: any, user: any) {
 		Post.aggregate([
 			{$sort: {content: 1} },
 			{$match: {
 				...match
 			}}
 		]).exec( (err: any, resp: any) => {
-			console.log('run')
 			if(err) return res.send(500, 'Error occurred: database error.');
 			res.json(resp.map((value: any) => {
 					return {
@@ -86,7 +81,7 @@ router.get('/search', function(req: any, res: any){
 					}
 			}));
 		})
-	// })
+	})
 })
 
 // get all post
@@ -103,7 +98,7 @@ router.get('/', verifiedToken, function(req: any, res: any) {
 								userId: userValue._id,
 								userName: userValue.name
 							}
-						}), 
+						}),
 						post: p.map((postValue: any) => {
 							return {
 								id: postValue._id,
@@ -185,19 +180,18 @@ router.put('/:id', verifiedToken, function(req: any, res: any) {
 router.delete('/:id', verifiedToken, function(req: any, res: any) {
 	Post.findById(req.params.id, function(err: any, po: any){
 		if (err)
-			return res.send(500, 'Error occured: database error.');
+			return res.send(500, err);
 		if (!po)
 			return res.send(404, 'Id not found');
+		Comments.deleteMany({"postId": po._id}, (err: any, value: any) => {
+			console.log(err, value)
+		})
 		po.delete(function(err: any, p: any) {
 			if (err)
-				return res.send(500, 'Error occured: database error.');
-			Comments.find({postId: po._id}, function(err: any, cmt: any) {
-				cmt.deleteMany(function(err: any, c: any) {
-					res.json({
-						id: p._id,
-						message: 'Delete successfully.'
-					})
-				})
+				return res.send(500, err);
+			res.json({
+				id: p._id,
+				message: 'Delete successfully.'
 			})
 		})
 	})

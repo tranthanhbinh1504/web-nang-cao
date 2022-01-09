@@ -9,3 +9,18 @@ export const notification = () => {
       })
   )
 }
+
+export const notificationSearchData = (title: any, content: any, department: any) => {
+  return (
+    axios.get('http://localhost:5000/api/post/search', {
+      params: {
+        title: title,
+        content: content,
+        department: department
+      }
+    })
+      .then((res: any) => {
+        return res.data
+      })
+  )
+}

@@ -8,41 +8,23 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Pagination from '@mui/material/Pagination'
 import { useHistory } from 'react-router-dom'
-import { notification } from 'src/api/notification'
 import './style.scss'
 
+type Props = {
+  item: any
+}
 
-
-
-
-const TableNotification: React.FC = () => {
-  const [data, setData] = useState<any>()
+const TableNotification: React.FC<Props>  = ({
+  item
+}) => {
   const [page, setPage] = useState(1)
-  // const [noOfPages] = React.useState(
-  //   Math.ceil(data.length / itemsPerPage)
-  // )
-  const [noOfPages, setNoOfPages] = useState(0)
   const itemsPerPage = 5
+  const noOfPages = item && item.length > 1 ? Math.ceil(item.length / itemsPerPage) : 1
   const history = useHistory()
-
-
-  useEffect(() => {
-    getDataTable()
-  }, [])
-
-  const getDataTable = () => {
-    notification().then((value) => {
-      setData(value)
-      setNoOfPages(value.length > 1 ? Math.ceil(value.length / itemsPerPage) : 1)
-    })
-  }
 
   const moveToDetail = () => {
     history.push('notificationDetail')
   }
-
-  //panigation
-
 
   const handleChangePage = (event:any, value:any) => {
     setPage(value)
@@ -52,15 +34,14 @@ const TableNotification: React.FC = () => {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
-          {data && data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+          {item && item.slice((page - 1) * itemsPerPage, page * itemsPerPage)
             .map((row: any, index: number) => {
               return(
-                <TableRow key={row.title}>
+                <TableRow key={row.index}>
                   <TableCell component="th" scope="row">
                     <div>
                       <h4>{row.title}</h4>
                       <p>{row.content}</p>
-                      <p>{row.img}</p>
                       <div>
                         <a className='detailLink' onClick={() => moveToDetail()}>Chi tiết thông báo</a>
                         <p className='notificationDate'>{row.department} | {row.dateTime}</p>

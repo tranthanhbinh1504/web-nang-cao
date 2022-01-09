@@ -27,8 +27,6 @@ const AddPost:React.FC<Props> = ({
   const { register, handleSubmit,setValue, formState: { errors } } = useForm()
 
   const onSubmit = (data:any) =>{
-    console.log(data)
-    console.log(image)
     onActionPost({
       name: 'Tran Thanh Binh',
       date: 'Dec 23, 2020',
