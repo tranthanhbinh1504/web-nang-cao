@@ -9,9 +9,6 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DatePicker from '@mui/lab/DatePicker'
 import Grid from '@mui/material/Grid'
 import './style.scss'
 import ResponsiveDrawer from 'src/components/sidebar'
@@ -138,59 +135,6 @@ const NotificationsPage: React.FC = () => {
                     </FormControl>
                   </div>
                 </Grid>
-                {/* <Grid item xs={4}>
-                  <div className='form_field'>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Choose notification type</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        label="Choose notification's type"
-                        fullWidth
-                        required
-                        {...register('notificationType')}
-                        onChange={handleChange}
-                      >
-                        <MenuItem value={'Bảo hiểm y tế'}>Bảo hiểm y tế</MenuItem>
-                        <MenuItem value={'Học vụ'}>Học vụ</MenuItem>
-                        <MenuItem value={'Đăng ký kế hoạch học tập'}>Đăng ký kế hoạch học tập</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                </Grid>
-                <Grid item xs={3}>
-                  <div className='form_field' id='datePickerFromDate'>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DatePicker
-                        disableFuture
-                        label="From date"
-                        openTo="year"
-                        views={['year', 'month', 'day']}
-                        value={fromDate}
-                        onChange={(newValue) => {
-                          setValueFromDate(newValue)
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </Grid>
-                <Grid item xs={3}>
-                  <div className='form_field' id='datePickerToDate'>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DatePicker
-                        disableFuture
-                        label="To date"
-                        openTo="year"
-                        views={['year', 'month', 'day']}
-                        value={toDate}
-                        onChange={(newValue) => {
-                          setValueToDate(newValue)
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </Grid> */}
                 <Grid item xs={2} className='button'>
                   <div>
                     <Button

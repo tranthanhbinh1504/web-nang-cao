@@ -88,33 +88,22 @@ router.get('/search', verifiedToken, function(req: any, res: any){
 router.get('/', function(req: any, res: any) {
 	Post.find(function(err: any, p: any) {
 		if(err) return res.send(500, 'Error occurred: database error.');
-		User.find({
-				_id: { $in : p.map(function(value: any) { return value.userId })}
-			}, function(err: any, user: any) {
-				res.json(
-					{
-						users: user.map((userValue: any) => {
-							return {
-								userId: userValue._id,
-								userName: userValue.name
-							}
-						}),
-						post: p.map((postValue: any) => {
-							return {
-								id: postValue._id,
-								content: postValue.content,
-								title: postValue.title,
-								userId: postValue.userId,
-								dateTime: moment(postValue.dateTime).format('L').toString(),
-								img: postValue.img,
-								record: postValue.record,
-								department: postValue.department,
-							}
-						})
-					}
-				);
-			}
-		)
+		res.json(
+			p.map((postValue: any) => {
+				console.log(postValue)
+				return {
+					id: postValue._id,
+					content: postValue.content,
+					title: postValue.title,
+					userId: postValue.userId,
+					username: postValue.username,
+					dateTime: moment(postValue.dateTime).format('L').toString(),
+					img: postValue.img,
+					record: postValue.record,
+					department: postValue.department,
+				}
+			})
+		);
 	});
 });
 
@@ -163,6 +152,7 @@ router.post('/', verifiedToken, upload.single('imgUpload'), function(req: any, r
 	var post = Post({
 		content: req.body.content,
 		title: req.body.title,
+		username: req.body.username,
 		userId: req.body.userId,
 		dateTime: new Date(),
 		img: urlLoadImage + file.filename,

@@ -32,7 +32,7 @@ const Post: React.FC<Props> = (
     name,
     date,
     content,
-    avaImgUrl,
+    avaImgUrl = 'https://cdn-icons-png.flaticon.com/512/147/147144.png',
     contentImgUrl,
     numLike = 0,
     numCmt,

@@ -7,6 +7,7 @@ interface Props {
   setAlertdata:React.Dispatch<React.SetStateAction<string>>,
   setAlert:React.Dispatch<React.SetStateAction<boolean>>,
 }
+
 export const getListUser = () => {
   const options = {
     headers: {'Authorization' : `Bearer ${token}`}
@@ -19,6 +20,7 @@ export const getListUser = () => {
       })
   )
 }
+
 export const createNewUser = (user: any, {setAlertdata, setAlert}:Props) => {
   const options = {
     headers: {'Authorization' : `Bearer ${token}`}
@@ -33,6 +35,7 @@ export const createNewUser = (user: any, {setAlertdata, setAlert}:Props) => {
       })
   )
 }
+
 export const editUser = (userid: string, user: any,{setAlertdata, setAlert}: Props ) => {
   const options = {
     headers: {'Authorization' : `Bearer ${token}`}
@@ -47,6 +50,7 @@ export const editUser = (userid: string, user: any,{setAlertdata, setAlert}: Pro
       })
   )
 }
+
 export const deleteUser = (userid: any,{setAlertdata, setAlert}: Props) => {
   const options = {
     headers: {'Authorization' : `Bearer ${token}`}
@@ -61,6 +65,7 @@ export const deleteUser = (userid: any,{setAlertdata, setAlert}: Props) => {
       })
   )
 }
+
 export const detailUser = (userid: any ) => {
   console.log()
   return (
@@ -70,6 +75,7 @@ export const detailUser = (userid: any ) => {
       })
   )
 }
+
 export const changePassword = (userid: any, user:any,{setAlertdata, setAlert}: Props) => {
   return (
     axios.put( API_URL + 'changePassword/'+ userid,user)

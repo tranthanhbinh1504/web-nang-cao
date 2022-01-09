@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 
 
 const Notification: React.FC = () => {
-  const [notificationData, setNotificationData] = useState<any>()
+  const [notificationData, setNotificationData] = useState<any>(null)
   const history = useHistory()
 
   useEffect(() => {

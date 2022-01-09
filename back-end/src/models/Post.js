@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 const postStruct = {
     content: String,
     title: String,
+    username: String,
     userId: String,
     dateTime: Date,
     img: String,

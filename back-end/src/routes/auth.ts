@@ -4,8 +4,6 @@ const authorizeUser = require('../models/User')
 var bcrypt = require('bcrypt');
 const passport = require('passport');
 
-
-
 // ===auth feature start===
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
@@ -20,7 +18,7 @@ function generateAccessToken(username: any) {
   return jwt.sign(
 	  				username, 
 					TOKEN_SECRET, 
-					{ expiresIn: '1800s' }
+					{ expiresIn: '125125125125214512s' }
 				);
 }
 // ===auth feature end===
@@ -28,19 +26,19 @@ function generateAccessToken(username: any) {
 router.post('/', function(req: any, res: any) {
 	var username = req.body.username;
 	var password = req.body.password;
-	console.log(password)
 	authorizeUser.findOne({ username: username}, (error: any, user: any) => {
 		if(error || !user) {
 			res.status(404)
 			return res.json({message: "Tài khoản không tồn tại"})
 		}
-		bcrypt.compare(password, user.password).then( function(result: any) {
+		bcrypt.compare(password, user.password).then( (result: any, err: any) => {
+			console.log(result, err)
 			if(result){
 				const token = generateAccessToken({ username: user.userName });
 				return res.json({token:token,user:user,message:'Đăng nhập thành công'});
 			}
 			res.status(404)
-			return res.json({message: "Sai tài khoản hoặc mật khẩu"})
+			return res.json({message: err})
 		});
 	});
 })
@@ -49,11 +47,7 @@ router.post('/', function(req: any, res: any) {
 router.get('/auth/google' ,
   passport.authenticate('google', { scope:
       [ 'email', 'profile' ] }
-)
-// function(req: any, res: any, next: any) {
-// 	res.json({abc: 'abc'})
-// } 
-); 
+)); 
 
 router.get( '/auth/google/callback',
     passport.authenticate( 'google', {

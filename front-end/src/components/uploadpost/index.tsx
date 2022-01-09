@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
 import Avatar from '@mui/material/Avatar'
-import {IconButton, Popover, SxProps, TextareaAutosize, Theme } from '@mui/material'
+import {IconButton, InputLabel, MenuItem, Select, TextareaAutosize, Theme } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Modal } from 'react-bootstrap'
 import Box from '@mui/material/Box'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import { useForm } from 'react-hook-form'
 import './style.scss'
+import { addPost } from 'src/api/dashboard'
+import FormControl from '@mui/material/FormControl'
+import { getDepartmentList } from 'src/api/department'
+
 
 enum ModalActionPost {
   ADD = 'ADD',
@@ -21,12 +25,28 @@ type Props = {
 const AddPost:React.FC<Props> = ({
   onActionPost
 }) => {
+  const [handleChangeEvent, setHandleChangeEvent] = useState('')
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
   const [image, setImage] = useState('')
-  const { register, handleSubmit,setValue, formState: { errors } } = useForm()
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm()
+  const userProfile = localStorage.getItem('username')
+  const userIdProfile = localStorage.getItem('userid')
+  const [departmentlist, setDepartmentList] = useState<any>()
+
+  useEffect(() => {
+    getDataDepartment()
+  }, [])
 
   const onSubmit = (data:any) =>{
+    console.log(data)
+    // addPost({
+    //   username: userProfile,
+    //   userId: userIdProfile,
+    //   content: data.post,
+    //   department:
+    // })
+
     onActionPost({
       name: 'Tran Thanh Binh',
       date: 'Dec 23, 2020',
@@ -52,6 +72,21 @@ const AddPost:React.FC<Props> = ({
 
   const closeModal = () => {
     setModal(false)
+  }
+
+  const handleChange = (event:any) => {
+    const {
+      target: { value },
+    } = event
+    setHandleChangeEvent(
+      typeof value === 'string' ? value.split(',') : value,
+    )
+  }
+
+  const getDataDepartment = () => {
+    getDepartmentList().then((data) => {
+      setDepartmentList(data)
+    })
   }
 
   return (
@@ -118,6 +153,31 @@ const AddPost:React.FC<Props> = ({
                   </IconButton>
                 </label>
               </div>
+              <div>
+                <div className='form_field'>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Department</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      label="Choose Department"
+                      fullWidth
+                      required
+                      {...register('department')}
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={''}>
+                        -
+                      </MenuItem>
+                      {departmentlist && departmentlist.map((items: any, index: number) => (
+                        <MenuItem value={items.name} key={index}>
+                          {items.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
               <Button
                 variant="contained"
                 type='submit'

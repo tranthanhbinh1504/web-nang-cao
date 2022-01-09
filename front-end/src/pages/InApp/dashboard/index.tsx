@@ -57,7 +57,8 @@ interface AddUserModal {
 }
 
 const DashBoard = () => {
-  const [data, setData] = useState(PostData)
+  const userProfile = localStorage.getItem('username')
+  const [data, setData] = useState<any>()
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
   const [postValue,setPostValue] = useState<string[]>([])
@@ -73,7 +74,7 @@ const DashBoard = () => {
 
   const getPostData = () => {
     getPostList().then((data) => {
-      setPostValue(data)
+      setData(data)
     })
   }
 
@@ -203,8 +204,9 @@ const DashBoard = () => {
 
   const actionPost = (value: any) => {
     let newPost = [...data]
-    newPost.push(value)
-    setData(newPost)
+    console.log(value)
+    // newPost.push(value)
+    // setData(newPost)
   }
 
   return (
@@ -223,17 +225,17 @@ const DashBoard = () => {
               <AddPost
                 onActionPost={actionPost}
               />
-              { data && data.map((item, index) =>
+              { data && data.map((item: any, index: number) =>
                 (
                   <div style={{padding: '16px 0'}} key={index}>
                     <Post
-                      name={item.name}
-                      date={item.date}
+                      name={item.username}
+                      date={item.dateTime}
                       content={item.content}
                       avaImgUrl={item.avaImgUrl}
-                      contentImgUrl={item.contentImgUrl}
-                      numLike={item.numLike}
-                      numCmt={item.numCmt}
+                      contentImgUrl={item.img}
+                      numLike={0}
+                      numCmt={0}
                       childComment={
                         <CommentSection
                           avaUser='https://cdn-icons-png.flaticon.com/512/147/147144.png'
