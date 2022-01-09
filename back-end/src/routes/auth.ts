@@ -26,9 +26,10 @@ function generateAccessToken(username: any) {
 // ===auth feature end===
 
 router.post('/', function(req: any, res: any) {
-	var userName = req.body.username;
+	var username = req.body.username;
 	var password = req.body.password;
-	authorizeUser.findOne({ userName: userName}, (error: any, user: any) => {
+	console.log(password)
+	authorizeUser.findOne({ username: username}, (error: any, user: any) => {
 		if(error || !user) {
 			res.status(404)
 			return res.json({message: "Tài khoản không tồn tại"})

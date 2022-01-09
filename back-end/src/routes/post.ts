@@ -85,7 +85,7 @@ router.get('/search', verifiedToken, function(req: any, res: any){
 })
 
 // get all post
-router.get('/', verifiedToken, function(req: any, res: any) {
+router.get('/', function(req: any, res: any) {
 	Post.find(function(err: any, p: any) {
 		if(err) return res.send(500, 'Error occurred: database error.');
 		User.find({
@@ -214,6 +214,23 @@ router.delete('/:id', verifiedToken, function(req: any, res: any) {
 			})
 		})
 	})
+});
+router.get('/userPost', function(req: any, res: any) {
+	Post.find({userId: req.query['id']}, function(err: any, p: any) {
+		if(err) return res.send(500, err);
+		res.json(p.map((value: any) => {
+			return {
+				id: value._id,
+				content: value.content,
+				title: value.title,
+				userId: value.userId,
+				dateTime: moment(value.dateTime).format('L').toString(),
+				img: value.img,
+				record: value.record,
+				department: value.department,
+			}
+		}))
+	}).sort({dateTime: -1})
 });
 
 
