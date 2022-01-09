@@ -1,8 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-const API_URL = 'http://localhost:5000/api/user'
+const API_URL = 'http://localhost:5000/api/user/'
 interface Props {
   setAlertdata:React.Dispatch<React.SetStateAction<string>>,
+  setAlert:React.Dispatch<React.SetStateAction<boolean>>,
 }
 export const getListUser = () => {
   return (
@@ -12,29 +13,33 @@ export const getListUser = () => {
       })
   )
 }
-export const createNewUser = (user:any,{setAlertdata}:Props) => {
+export const createNewUser = (user: any, {setAlertdata, setAlert}:Props) => {
   return (
-    axios.post(API_URL,user)
+    axios.post(API_URL, user)
       .then(res => {
         setAlertdata(res.data.message)
+        setAlert(true)
         return  res.data
       })
   )
 }
-export const editUser = (user:any,{setAlertdata}:Props) => {
+export const editUser = (userid: string, user: any,{setAlertdata, setAlert}: Props ) => {
+  console.log()
   return (
-    axios.put(API_URL+user.id,user)
+    axios.put( `${API_URL}${userid}`, user)
       .then(res => {
         setAlertdata(res.data.message)
+        setAlert(true)
         return  res.data
       })
   )
 }
-export const deleteUser = (userid:any,{setAlertdata}:Props) => {
+export const deleteUser = (userid: any,{setAlertdata, setAlert}: Props) => {
   return (
-    axios.delete(API_URL,userid)
+    axios.delete( API_URL + userid)
       .then(res => {
         setAlertdata(res.data.message)
+        setAlert(true)
         return  res.data
       })
   )

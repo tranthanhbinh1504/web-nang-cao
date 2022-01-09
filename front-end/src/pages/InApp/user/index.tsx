@@ -11,7 +11,7 @@ import Pagination from '@mui/material/Pagination'
 import ResponsiveDrawer from 'src/components/sidebar'
 import {createNewUser, deleteUser, editUser, getListUser} from 'src/api/user'
 import {getDepartmentList} from 'src/api/department'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { FormControl, InputLabel, MenuItem, Select ,Collapse } from '@mui/material'
 import AlertError from 'src/components/alert'
 
 //schema validate of Add User Modal
@@ -29,62 +29,71 @@ enum ModalAction {
   DELETE = 'DELETE',
 }
 const schema = yup.object({
-  name: yup.string().required(),
-  username: yup.string().required(),
-  department: yup.array().required(),
-  password: yup.string().required(),
-  role: yup.string().required(),
+  name: yup.string(),
+  username: yup.string(),
+  department: yup.array(),
+  password: yup.string(),
+  role: yup.string(),
 }).required()
 
 const UserAdmin = () => {
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-
-  const {control, register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>({
-    resolver: yupResolver(schema)
-  })
   const [userdata, setUserdata] = useState<any>()
   const [departmentlist, setDepartmentList] = useState<any>()
   const [alertdata,setAlertdata] = useState('')
   const [selectvalue,setSelectValue] = useState<string[]>([])
+  const [editOradd,setEditOrAdd] = useState(false)
+  const [deluserid,setDelUserId] = useState('')
+  const [alert,setAlert] = useState(false)
+  const [openalert,setOpenAlert] = useState(false)
+  const {control, register, handleSubmit,setValue, formState: { errors } } = useForm<AddUserModal>({
+    resolver: yupResolver(schema)
+  })
   //panigation
   const itemsPerPage = 6
   const [page, setPage]= useState(1)
   const [noOfPages,setNoOfPages]= useState(1)
 
-  useEffect(() => {
-    getDataUser()
-    getDataDepartment()
-  }, [])
+  useEffect(
+    () => {
+      getDataUser()
+      getDataDepartment()
 
+    }, [])
+
+  const autoAlert =  () => {
+    setOpenAlert(true)
+    setTimeout(() => {
+      setOpenAlert(false)
+    }, 1000)
+  }
   const getDataUser = () => {
     getListUser().then((data)=>{
       setUserdata(data)
       setNoOfPages(Math.ceil(data.length / itemsPerPage))
     })
   }
+
   const getDataDepartment = () => {
     getDepartmentList().then((data)=>{
       setDepartmentList(data)
     })
   }
-  const delUser = (data:any) => {
-    deleteUser(data,{setAlertdata}).then(()=>{
-      setModal(false)
-    }).catch(err => {
-      setAlertdata(err.response.data.message)
-    })
-  }
-  const editUers = (data:any) => {
-    editUser(data,{setAlertdata}).then(()=>{
-      setModal(false)
-    }).catch(err => {
-      setAlertdata(err.response.data.message)
-    })
-  }
 
   const handleChangePage = (event:any, value:any) => {
     setPage(value)
+  }
+
+  const delUser = () => {
+    deleteUser(deluserid,{setAlertdata,setAlert}).then(()=>{
+      setModal(false)
+      autoAlert()
+      getDataUser()
+    }).catch(err => {
+      setAlertdata(err.response.data.message)
+      setAlert(false)
+    })
   }
 
   const onSubmit = (data: AddUserModal) =>{
@@ -95,12 +104,26 @@ const UserAdmin = () => {
       password: data.password,
       department: selectvalue
     }
-    createNewUser(data,{setAlertdata}).then(()=>{
-      getDataUser()
-    }).catch(err => {
-      setAlertdata(err.response.data.message)
-    })
-    setNoOfPages(Math.ceil(userdata.length / itemsPerPage))
+    if(editOradd) {
+      createNewUser(newValue,{setAlertdata,setAlert}).then(()=>{
+        getDataUser()
+        autoAlert()
+        setEditOrAdd(false)
+      }).catch(err => {
+        setAlertdata(err.response.data.message)
+        setAlert(false)
+      })
+      setNoOfPages(Math.ceil(userdata.length / itemsPerPage))
+    }
+    if(!editOradd) {
+      editUser(deluserid,newValue,{setAlertdata,setAlert}).then(()=>{
+        autoAlert()
+        getDataUser()
+      }).catch(err => {
+        setAlertdata(err.response.data.message)
+        setAlert(false)
+      })
+    }
   }
 
   const handleChange = (event: any) => {
@@ -116,22 +139,25 @@ const UserAdmin = () => {
     setModal(true)
     setAction(action)
     if (action === ModalAction.ADD) {
+      setEditOrAdd(true)
       setValue('name', '')
       setValue('username', '')
       setValue('role', '')
       setValue('password', '')
-      setValue('department', [])
+      setSelectValue([])
     }
-    if (data) {
+    if(action === ModalAction.DELETE){
+      setDelUserId(data)
+    }
+    if (action === ModalAction.EDIT) {
+      setEditOrAdd(false)
+      setDelUserId(data.id)
       setValue('name', data.name)
       setValue('username', data.username)
       setValue('role', data.role)
-      console.log(data.department)
       let temp: string[] = []
-
       data.department.map((item:any) => {
         temp.push(item.departmentID)
-        console.log(item.departmentID)
       })
       setSelectValue(temp)
     }
@@ -264,7 +290,7 @@ const UserAdmin = () => {
                 color='error'
                 size='medium'
                 variant='contained'
-                onClick={closeModal}
+                onClick={delUser}
                 sx={{ marginTop: 2, paddingX: 5, paddingY: 1,  marginLeft: 2 }}
               >
                 Delete
@@ -278,8 +304,9 @@ const UserAdmin = () => {
   return (
     <ResponsiveDrawer childComponent={
       <div className="user-admin">
-        <AlertError alertdata={alertdata} />
-
+        <Collapse in={openalert}>
+          <AlertError alertdata={alertdata} alert={alert} />
+        </Collapse>
         <div className="container useradmin">
           <h4 className="header text-primary text-center text-uppercase">Danh sách người dùng</h4>
           <button

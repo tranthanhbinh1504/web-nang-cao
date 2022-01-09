@@ -69,20 +69,20 @@ router.post('/', function(req: any, res: any){
 // edit one user
 router.put('/:id', function(req: any, res: any){
 	User.findById(req.params.id, function(err: any, u: any) {
-        if(err) return res.send(500, 'Error occured: database error');
+        if(err) return res.status(500).send({message:'Error occured: database error'});
         if(!u) return res.send(404, 'Id not found');
 		// bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
 			// u.userName = req.body.username;
-			u.username = req.body.username,
-			u.name = req.body.name,
-			u.class = req.body.class,
-			u.avatar = req.body.avatar,
-			u.department = req.body.department
-			u.role = req.body.role
+			u.username = req.body.username ? req.body.username: u.username,
+			u.name = req.body.name ?req.body.name :u.name,
+			u.class = req.body.class ?req.body.class :u.class ,
+			u.avatar = req.body.avatar ? req.body.avatar : u.avatar,
+			u.department = req.body.department? [req.body.department] : [u.department] ,
+			u.role = req.body.role? req.body.role :u.role
 		
 			u.save(function(err: any, u: any){
-				if(err) return res.send(500, 'Error occurred: database error.');
-				res.json({id: u._id});
+				if(err) return res.status(500).send({message:err});
+				res.json({id: u._id,message:'Chỉnh sữa người dùng thành công'});
 			});
 		// })
 	});
@@ -114,11 +114,7 @@ router.delete('/:id', function(req: any, res: any){
         u.delete( function(err: any, u: any){
             if (err)
                 return res.send(500, 'Error occured: database error.');
-            res.json({
-                id: u._id,
-                username: u.userName,
-                password: u.password,
-            })
+            res.json({message:'Xóa người dùng thành công'})
         })
     })
 })
