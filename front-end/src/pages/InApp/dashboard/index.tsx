@@ -11,6 +11,7 @@ import ResponsiveDrawer from 'src/components/sidebar'
 import CommentSection from 'src/components/commentSection'
 import Notification from 'src/components/notification'
 import { getPostList } from 'src/api/dashboard'
+import { getCommentOfPost } from 'src/api/comment'
 
 const drawerWidth = 240
 
@@ -59,15 +60,29 @@ const DashBoard = () => {
   const [data, setData] = useState(PostData)
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
-  const [postvalue,setPostValue] = useState<string[]>([])
+  const [postValue,setPostValue] = useState<string[]>([])
+  const [commentValue,setCommentValue] = useState<string[]>([])
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<AddUserModal>()
+
+  useEffect(() => {
+    getCommentData('61da594762f926b4cad147a4')
+    console.log('commentValue')
+    console.log(commentValue)
+  }, [])
 
   const getPostData = () => {
     getPostList().then((data) => {
       setPostValue(data)
     })
   }
+
+  const getCommentData = (postId: any) => {
+    getCommentOfPost(postId).then((data) => {
+      setCommentValue(data)
+    })
+  }
+
 
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)
@@ -222,7 +237,7 @@ const DashBoard = () => {
                       childComment={
                         <CommentSection
                           avaUser='https://cdn-icons-png.flaticon.com/512/147/147144.png'
-                          listComments={fakeCmt}
+                          listComments={commentValue}
                         />}
                     />
                   </div>

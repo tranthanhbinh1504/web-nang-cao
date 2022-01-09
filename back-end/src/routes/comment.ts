@@ -9,12 +9,13 @@ router.get('/:postId', verifiedToken, function(req: any, res: any){
 	const postID = req.params.postId;
 	if (postID == null) return res.send(400, "Error occurred: Post doesn't exits.");
     Comments.find({ postId : postID}, function(err: any, cmt: any){
-        if(err) return res.send(500, 'Error occurred: database error.');
+        if(err) return res.send(500, err);
         res.json(cmt.map(function(c: any){
             return {
                 content: c.content,
                 postId: c.postId,
                 userId: c.userId,
+                userName: c.userName,
                 commentTime: moment(c.commentTime).format('L').toString(),
             }
         }));
@@ -28,6 +29,7 @@ router.post('/', verifiedToken, function(req: any, res: any) {
 		content: req.body.content,
 		postId: req.body.postId,
 		userId: req.body.userId,
+		userName: req.body.username,
 		commentTime: new Date(),
 	});
 	cmt.save(function(err: any, c: any){
