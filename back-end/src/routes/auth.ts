@@ -4,7 +4,6 @@ const authorizeUser = require('../models/User')
 var bcrypt = require('bcrypt');
 const passport = require('passport');
 
-// const saltRounds = 10;
 
 
 // ===auth feature start===

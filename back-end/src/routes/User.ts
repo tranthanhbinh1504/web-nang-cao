@@ -49,20 +49,25 @@ router.post('/', function(req: any, res: any){
 		})
 		
 	});
-	bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
-		var newUser = new User({
-			username: req.body.username,
-			password: hash,
-			name: req.body.name,
-			class: req.body.class,
-			avatar: req.body.avatar,
-			department: department,
-			role: req.body.role
-		})
-		newUser.save((err: any, user: any) => {
-		  if(err) return res.json({success: false, msg: err})
-		  res.json({id: user._id,message:'Tạo người dùng thành công'});
-		})
+	User.find({username: req.body.username}, function(error: any, user: any) {
+		if (!user) {
+			bcrypt.hash(req.body.password, saltRounds).then(function(hash: any) {
+				var newUser = new User({
+					username: req.body.username,
+					password: hash,
+					name: req.body.name,
+					class: req.body.class,
+					avatar: req.body.avatar,
+					department: department,
+					role: req.body.role
+				})
+				newUser.save((err: any, user: any) => {
+				  if(err) return res.json({success: false, msg: err})
+				  res.json({id: user._id,message:'Tạo người dùng thành công'});
+				})
+			})
+		}
+		return res.json({success: false, msg:'Người dùng đã tồn tại, xin chọn userName khác.'});
 	})
 })
 

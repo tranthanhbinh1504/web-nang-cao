@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const Comments = require('../models/Comment')
+var Comments = require('../models/Comment')
 var verifiedToken = require('../apis/token');
+var moment = require('moment')
 
 // get comment của bài post => TO DO count numChild > 1
-router.get('/', verifiedToken, function(req: any, res: any){
-	const postID = req.body.postId;
+router.get('/:postId', verifiedToken, function(req: any, res: any){
+	const postID = req.params.postId;
 	if (postID == null) return res.send(400, "Error occurred: Post doesn't exits.");
     Comments.find({ postId : postID}, function(err: any, cmt: any){
         if(err) return res.send(500, 'Error occurred: database error.');
@@ -14,7 +15,7 @@ router.get('/', verifiedToken, function(req: any, res: any){
                 content: c.content,
                 postId: c.postId,
                 userId: c.userId,
-                commentTime: c.commentTime,
+                commentTime: moment(c.commentTime).format('L').toString(),
             }
         }));
     });

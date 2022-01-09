@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import './style.scss'
@@ -10,6 +10,7 @@ import Post from 'src/components/post'
 import ResponsiveDrawer from 'src/components/sidebar'
 import CommentSection from 'src/components/commentSection'
 import Notification from 'src/components/notification'
+import { getPostList } from 'src/api/dashboard'
 
 const drawerWidth = 240
 
@@ -58,8 +59,15 @@ const DashBoard = () => {
   const [data, setData] = useState(PostData)
   const [modal, setModal] = useState(false)
   const [action, setAction] = useState('')
+  const [postvalue,setPostValue] = useState<string[]>([])
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<AddUserModal>()
+
+  const getPostData = () => {
+    getPostList().then((data) => {
+      setPostValue(data)
+    })
+  }
 
   const onSubmit = (data: AddUserModal) =>{
     console.log(data)

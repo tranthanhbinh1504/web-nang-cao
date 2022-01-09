@@ -17,14 +17,15 @@ const NotiItem: React.FC<Props> = ({
           minWidth: 250,
           height: 100,
           borderLeft:'3px solid black',
+          paddingLeft: '10px',
         }}
         className='box-noti'
       >
         <span className="subTitle">[{item.department}]</span>
         <span className="subTitle">-</span>
-        <span className="subTitle">{item.date}</span>
+        <span className="subTitle">{item.dateTime}</span>
         <a href=""><h6 className='title'>{item.title}</h6></a>
-        <div className="detail-noti">{item.details}</div>
+        <div className="detail-noti">{item.content}</div>
       </Box>
       <hr/>
     </div>

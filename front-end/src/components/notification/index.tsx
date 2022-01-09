@@ -1,31 +1,29 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.scss'
 import Box from '@mui/material/Box'
 import NotiItem from '../subnotification'
+import { notification } from 'src/api/notification'
+import { useHistory } from 'react-router-dom'
 
-const  NotifiData = [
-
-  {
-    department:'Phòng đại học',
-    date:'04/06/1999',
-    title: 'Trang chủ',
-    details: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo rerum praesentium ab ipsam beatae quidem quam, unde adipisci illo quaerat, aspernatur nemo rem porro ex cumque? Porro, quasi dicta. Consectetur!',
-  },
-  {
-    department:'Khoa CNTT',
-    date:'04/06/1999',
-    title: 'Trang bìa',
-    details: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo rerum praesentium ab ipsam beatae quidem quam, unde adipisci illo quaerat, aspernatur nemo rem porro ex cumque? Porro, quasi dicta. Consectetur!',
-  },
-  {
-    department:'Khoa CNTT',
-    date:'04/06/1999',
-    title: 'Trang bìa',
-    details: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo rerum praesentium ab ipsam beatae quidem quam, unde adipisci illo quaerat, aspernatur nemo rem porro ex cumque? Porro, quasi dicta. Consectetur!',
-  },
-]
 
 const Notification: React.FC = () => {
+  const [notificationData, setNotificationData] = useState<any>()
+  const history = useHistory()
+
+  useEffect(() => {
+    getDataNotification()
+  }, [])
+
+  const getDataNotification = () => {
+    notification().then((data) => {
+      setNotificationData(data)
+    })
+  }
+
+  const moveTonotifiactionPage = () => {
+    history.push('notification')
+  }
+
   return (
     <div className='noti'>
       <Box
@@ -34,7 +32,7 @@ const Notification: React.FC = () => {
         }}
       >
         <span className='noti_title'>Thông Báo mới</span>
-        <a href="/">
+        <a onClick={() => moveTonotifiactionPage()}>
           <span className='noti_all'>Xem tất cả</span>
         </a>
       </Box>
@@ -43,7 +41,7 @@ const Notification: React.FC = () => {
           justifyContent: 'center'
         }}
       >
-        {NotifiData.map((item, index) => {
+        {notificationData && notificationData.slice(0, 3).map((item: any, index: any) => {
           return <NotiItem item={item} key={index} />
         })}
       </Box>

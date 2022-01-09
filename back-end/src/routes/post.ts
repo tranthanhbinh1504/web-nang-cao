@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Post = require('../models/Post')
 var User = require('../models/User')
+var Comments = require('../models/Comment')
 var verifiedToken = require('../apis/token');
 var multer = require('multer')
 var moment = require('moment')
@@ -92,18 +93,33 @@ router.get('/search', function(req: any, res: any){
 router.get('/', verifiedToken, function(req: any, res: any) {
 	Post.find(function(err: any, p: any) {
 		if(err) return res.send(500, 'Error occurred: database error.');
-		res.json(p.map((value: any) => {
-				return {
-					id: value._id,
-					content: value.content,
-					title: value.title,
-					userId: value.userId,
-					dateTime: moment(value.dateTime).format('L').toString(),
-					img: value.img,
-					record: value.record,
-					department: value.department,
-				}
-		}));
+		User.find({
+				_id: { $in : p.map(function(value: any) { return value.userId })}
+			}, function(err: any, user: any) {
+				res.json(
+					{
+						users: user.map((userValue: any) => {
+							return {
+								userId: userValue._id,
+								userName: userValue.name
+							}
+						}), 
+						post: p.map((postValue: any) => {
+							return {
+								id: postValue._id,
+								content: postValue.content,
+								title: postValue.title,
+								userId: postValue.userId,
+								dateTime: moment(postValue.dateTime).format('L').toString(),
+								img: postValue.img,
+								record: postValue.record,
+								department: postValue.department,
+							}
+						})
+					}
+				);
+			}
+		)
 	});
 });
 
@@ -175,8 +191,13 @@ router.delete('/:id', verifiedToken, function(req: any, res: any) {
 		po.delete(function(err: any, p: any) {
 			if (err)
 				return res.send(500, 'Error occured: database error.');
-			res.json({
-				id: p._id
+			Comments.find({postId: po._id}, function(err: any, cmt: any) {
+				cmt.deleteMany(function(err: any, c: any) {
+					res.json({
+						id: p._id,
+						message: 'Delete successfully.'
+					})
+				})
 			})
 		})
 	})
